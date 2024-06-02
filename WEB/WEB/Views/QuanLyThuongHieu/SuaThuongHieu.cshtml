@@ -1,0 +1,39 @@
+﻿@model WEB.Models.THUONGHIEU
+@{
+    ViewBag.Title = "Sua Thuong Hieu";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-container">
+        <h4 style="margin:20px;">Chỉnh Sửa Thông Tin Thương Hiệu</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.MaThuongHieu)
+        <div class="form-group row">
+            @Html.LabelFor(model => model.MaThuongHieu)
+            @Html.DisplayFor(model => model.MaThuongHieu)
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(model => model.TenThuongHieu)
+            @Html.EditorFor(model => model.TenThuongHieu, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TenThuongHieu, "", new { @class = "text-danger" })
+        </div>
+
+
+        <div class="form-group">
+            <input type="submit" value="Xác Nhận Sửa" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay Lại", "QuanLyThuongHieu", "QuanLyThuongHieu", null, new { @class = "btn-link" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

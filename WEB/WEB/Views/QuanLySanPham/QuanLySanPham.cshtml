@@ -1,0 +1,81 @@
+﻿@model IEnumerable<WEB.Models.SANPHAM>
+@{
+    ViewBag.Title = "Quản Lý Sản Phẩm";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Quản Lý Sản Phẩm </h2>
+
+<p>
+    @Html.ActionLink("Thêm Sản Phẩm", "TaoSanPham","QuanLySanPham")
+</p>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    Mã SP
+                </th>
+                <th>
+                    Tên Sản Phẩm
+                </th>
+                <th>
+                    Tên Danh Mục
+                </th>
+                <th>
+                    Tên Thương Hiệu
+                </th>
+                <th>
+                    Hình Ảnh
+                </th>
+                <th>
+                    Giá Tiền
+                </th>
+                <th>
+                    Dung Tích
+                </th>
+                <th>
+                    Mô Tả
+                </th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaSanPham)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenSanPham)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DANHMUC.TenDanhMuc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.THUONGHIEU.TenThuongHieu)
+                    </td>
+                    <td>
+                        <img src="@Url.Content("~/Content/SanPhamImage/" + item.HinhAnh)" alt="Hình ảnh" style="max-width: 100px; max-height: 100px;" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GiaTien)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DungTich)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MoTa)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Sửa", "SuaSanPham", new { id = item.MaSanPham }, new { @class = "btn btn-primary" }) 
+
+                        @Html.ActionLink("Xóa", "XoaSanPham", new { id = item.MaSanPham }, new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

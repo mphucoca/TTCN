@@ -1,0 +1,42 @@
+﻿@model WEB.Models.CUAHANG
+@{
+    ViewBag.Title = "Xóa Cửa Hàng";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Xóa Cửa Hàng </h2>
+
+<h3>Bạn có chắc chắn muốn xóa cửa hàng này không?</h3>
+
+<div>
+    <div class="info-container">
+        <h4>Thông tin cửa hàng</h4>
+        <hr />
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.MaCuaHang)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.MaCuaHang)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.TenCuaHang)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.TenCuaHang)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.DiaChi)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.DiaChi)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.SoDienThoai)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.SoDienThoai)</span>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-danger" /> |
+            @Html.ActionLink("Quay Lại", "QuanLyCuaHang")
+        </div>
+    }
+</div>

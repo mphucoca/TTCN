@@ -1,0 +1,52 @@
+﻿@model WEB.Models.CHITIETGIAMGIA
+
+@{
+    ViewBag.Title = "Thêm Chi Tiết Giảm Giá"; Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Thêm Chi Tiết Giảm Giá</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Nhập thông tin chi tiết giảm giá</h4>
+        <hr />
+        @Html.HiddenFor(model => model.MaGiamGia)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaSanPham, "Sản Phẩm", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.MaSanPham, (SelectList)ViewBag.SanPhamList, "Chọn sản phẩm", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MaSanPham, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MucGiamGia, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MucGiamGia, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MucGiamGia, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Giamua, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Giamua, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Giamua, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Thêm" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay lại", "SuaGiamGia", new { id = ViewBag.GiamGiaId })
+</div>

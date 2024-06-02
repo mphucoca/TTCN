@@ -1,0 +1,69 @@
+﻿@model IEnumerable<WEB.Models.TINNHAN>
+@{
+    ViewBag.Title = "Quản Lý Tin Nhắn";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Quản Lý Tin Nhắn </h2>
+
+<p>
+    @Html.ActionLink("Thêm Tin Nhắn", "TaoTinNhan", "QuanLyTinNhan")
+</p>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    Mã Tin Nhắn
+                </th>
+                <th>
+                    Họ Tên
+                </th>
+                <th>
+                    Email 
+                </th>
+                <th>
+                    Số Điện Thoại
+                </th>
+                <th>
+                    Nội Dung
+                </th>
+                <th>
+                    Cửa Hàng
+                </th>             
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaTinNhan)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Hoten)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SDT)
+                    </td>                  
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NoiDung)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CUAHANG.TenCuaHang)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Sửa", "SuaTinNhan", new { id = item.MaTinNhan }, new { @class = "btn btn-primary" }) 
+
+                        @Html.ActionLink("Xóa", "XoaTinNhan", new { id = item.MaTinNhan }, new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,57 @@
+﻿
+@model IEnumerable<WEB.Models.HINHTHUCTHANHTOAN>
+@{
+    ViewBag.Title = "Quản Lý Hình Thức Thanh Toán";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+
+
+
+
+
+
+<h2>Quản lý thông tin Hình Thức Thanh Toán</h2>
+
+<p>
+    @Html.ActionLink("Thêm mới", "TaoHinhThucThanhToan", "QuanLyHinhThucThanhToan")
+</p>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    Mã Hình Thức Thanh Toán
+                </th>
+                <th>
+                    Tên Hình Thức Thanh Toán
+                </th>
+                <th>
+                    Mô Tả
+                </th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaHinhThucThanhToan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenHinhThucThanhToan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MoTa)
+                </td>
+                <td>
+                    @Html.ActionLink("Chỉnh sửa", "SuaHinhThucThanhToan", new { id = item.MaHinhThucThanhToan }, new { @class = "btn btn-primary" })
+
+                    @Html.ActionLink("Xóa", "XoaHinhThucThanhToan", new { id = item.MaHinhThucThanhToan }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,50 @@
+﻿@model WEB.Models.CHITIETGIAMGIA
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Thông tin chi tiết giảm giá</h2>
+
+<div>
+    <h4>Chi Tiết giảm giá</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+           Mô tả
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GIAMGIA.MoTa)
+        </dd>
+
+        <dt>
+         Tên sản phẩm
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SANPHAM.TenSanPham)
+        </dd>
+
+        <dt>
+           Mức giảm giá
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MucGiamGia)
+        </dd>
+
+        <dt>
+           Giá mua để áp dụng
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Giamua)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Chỉnh sửa", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Quay lại", "Index")
+</p>

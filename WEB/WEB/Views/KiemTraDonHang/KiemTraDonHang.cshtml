@@ -1,0 +1,206 @@
+﻿
+@{
+    ViewBag.Title = "Kiểm Tra Đơn Hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .styled-div {
+        width: 500px;
+        height: 400px;
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        margin: 20px;
+    }
+</style>
+
+<div class="styled-div">
+    <h2>Kiểm tra đơn hàng của bạn</h2>
+    <form id="contactForm" method="post" action="/KiemTraDonHang/KiemTra">
+        <div class="form-group">
+            <p>
+                <input type="radio" name="contactType" value="phone" checked> Số điện thoại<br>
+                <input type="radio" name="contactType" value="email"> Email<br>
+                <input type="radio" name="contactType" value="both"> Số điện thoại và Email<br>
+            </p>
+        </div>
+        <div class="form-group">
+            <label id="phoneLabel" for="phoneInput">Số điện thoại:</label>
+            <input type="text" class="form-control" id="phoneInput" name="phone" placeholder="0909 xxx xxx" />
+        </div>
+        <div class="form-group" style="display: none;" id="emailGroup">
+            <label for="emailInput">Email:</label>
+            <input type="email" class="form-control" id="emailInput" name="email" placeholder="email@gmail.com" />
+        </div>
+        <button type="submit" class="btn btn-primary">Kiểm tra</button>
+    </form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('input[type="radio"]').click(function () {
+            var inputValue = $(this).attr("value");
+            if (inputValue === 'phone') {
+                $('#phoneLabel').show();
+                $('#phoneInput').show();
+                $('#emailGroup').hide();
+            } else if (inputValue === 'email') {
+                $('#phoneLabel').hide();
+                $('#phoneInput').hide();
+                $('#emailGroup').show();
+            } else if (inputValue === 'both') {
+                $('#phoneLabel').show();
+                $('#phoneInput').show();
+                $('#emailGroup').show();
+            }
+        });
+    });
+</script>
+<style>
+    .styled-div {
+        width: 100%;
+        max-width: 600px;
+        background-color: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin: 20px auto;
+        font-family: 'Arial', sans-serif;
+    }
+
+        .styled-div h2 {
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .btn-primary {
+        background-color: #ff5722;
+        border: none;
+        padding: 10px 20px;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+        .btn-primary:hover {
+            background-color: #e64a19;
+        }
+
+    /* CSS cho phần hiển thị đơn hàng */
+    .table-responsive {
+        overflow-x: auto;
+        margin-top: 20px;
+    }
+
+    .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+        background-color: #fff;
+        border-collapse: collapse;
+    }
+
+        .table th, .table td {
+            padding: 10px;
+            vertical-align: top;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .table thead th {
+            background-color: #ff5722;
+            color: #fff;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .table tbody tr:nth-of-type(odd) {
+            background-color: #f9f9f9;
+        }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(255, 87, 34, 0.1);
+    }
+
+    .order-actions a {
+        color: #ff5722;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .order-actions a:hover {
+            text-decoration: underline;
+        }
+
+</style>
+@if (ViewBag.list != null)
+{
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Thời gian</th>
+                    <th>Người đặt hàng</th>
+                    <th>Địa chỉ giao hàng</th>
+                    <th>Ghi chú</th>
+                    <th>Hình thức thanh toán</th>
+                    <th>Hình thức vận chuyển</th>
+                    <th>Tình trạng thanh toán</th>
+                    <th>Tình trạng giao hàng</th>
+                  @if (ViewBag.TRUE != null) {<th></th> }  
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.list)
+                {
+                <tr>
+                    <td>@item.NgayDatHang</td>
+                    <td>@(item.TAIKHOAN != null ? item.TAIKHOAN.Ho : "") @(item.TAIKHOAN != null ? item.TAIKHOAN.Ten : "")</td>
+                    <td>@item.DiaChiGiao</td>
+                    <td>@item.GhiChu</td>
+                    <td>@(item.HINHTHUCTHANHTOAN != null ? item.HINHTHUCTHANHTOAN.TenHinhThucThanhToan : "")</td>
+                    <td>@(item.HINHTHUCVANCHUYEN != null ? item.HINHTHUCVANCHUYEN.TenHinhThucVanChuyen : "")</td>
+                    <td>@item.TinhTrangThanhToan</td>
+                    <td>@item.TinhTrangGiaoHang</td>
+                    @if (Session["username"] != null && Session["username"].ToString() == item.ID.ToString())
+                    {
+                        <td class="order-actions">@Html.ActionLink("Chi Tiết", "ChiTietDonHang", new { id = item.MaDonHang })</td>
+                    }
+                </tr>
+                }
+
+
+
+
+            </tbody>
+        </table>
+    </div>
+}
+
+

@@ -1,0 +1,54 @@
+﻿@model WEB.Models.DANHGIA
+@{
+    ViewBag.Title = "Xóa Đánh Giá";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Xác Nhận Xóa Đánh Giá</h2>
+
+<div>
+    <div class="info-container">
+        <h4>Thông tin Đánh Giá</h4>
+        <hr />
+
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.MaDanhGiaSanPham)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.MaDanhGiaSanPham)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.HoTen)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.HoTen)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.NoiDungDanhGia)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.NoiDungDanhGia)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.Email)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.Email)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.SANPHAM.TenSanPham)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.SANPHAM.TenSanPham)</span>
+        </div>     
+        
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.ThoiGian)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.ThoiGian)</span>
+        </div>  
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.HinhAnh)</span>
+            <img id="preview" src="@(Model.HinhAnh != null ? Url.Content("~/Content/SanPhamImage/" + Model.HinhAnh) : "#")" alt="Image Preview" style="display:@(Model.HinhAnh != null ? "block" : "none"); max-width:100px; height: 100px; margin-top: 10px;" />
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-danger" /> |
+            @Html.ActionLink("Quay Lại", "QuanLyDanhGia")
+        </div>
+    }
+</div>

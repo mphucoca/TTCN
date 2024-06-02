@@ -1,0 +1,38 @@
+﻿@model WEB.Models.HINHTHUCVANCHUYEN
+@{
+    ViewBag.Title = "Xóa Hình Thức Vận Chuyển ";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Xóa  Hình Thức Vận Chuyển </h2>
+
+<h3>Bạn có chắc chắn muốn xóa  Hình Thức Vận Chuyển này không?</h3>
+
+<div>
+    <div class="info-container">
+        <h4>Thông tin Hình Thức Vận Chuyển</h4>
+        <hr />
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.MaHinhThucVanChuyen)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.MaHinhThucVanChuyen)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.TenHinhThucVanChuyen)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.TenHinhThucVanChuyen)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.MoTa)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.MoTa)</span>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-danger" /> |
+            @Html.ActionLink("Quay Lại", "QuanLyHinhThucVanChuyen")
+        </div>
+    }
+</div>

@@ -1,0 +1,57 @@
+﻿@model WEB.Models.SANPHAM
+@{
+    ViewBag.Title = "XoaSanPham";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Xác Nhận Xóa Sản Phẩm</h2>
+
+<div>
+    <div class="info-container">
+        <h4>Thông tin Sản Phẩm</h4>
+        <hr />
+     
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.MaSanPham)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.MaSanPham)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.TenSanPham)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.TenSanPham)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.DANHMUC.TenDanhMuc)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.DANHMUC.TenDanhMuc)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.THUONGHIEU.TenThuongHieu)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.THUONGHIEU.TenThuongHieu)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.HinhAnh)</span>
+            <img id="preview" src="@(Model.HinhAnh != null ? Url.Content("~/Content/SanPhamImage/" + Model.HinhAnh) : "#")" alt="Image Preview" style="display:@(Model.HinhAnh != null ? "block" : "none"); max-width:100px; height: 100px; margin-top: 10px;" />
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.GiaTien)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.GiaTien)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.DungTich)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.DungTich)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.MoTa)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.MoTa)</span>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-danger" /> |
+            @Html.ActionLink("Quay Lại", "QuanLySanPham")
+        </div>
+    }
+</div>

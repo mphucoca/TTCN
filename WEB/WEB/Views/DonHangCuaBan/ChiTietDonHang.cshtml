@@ -1,0 +1,254 @@
+﻿@model WEB.Models.DONHANG
+
+@{
+    ViewBag.Title = "Chi Tiết Đơn Hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Thông tin chi tiết đơn hàng</h2>
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        <table>
+            <tr>
+                <th>Họ tên</th>
+                <td>@ViewBag.hoten</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>@ViewBag.email</td>
+            </tr>
+            <tr>
+                <th>Số điện thoại</th>
+                <td>@ViewBag.sodienthoai</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th>
+                    Hình thức thanh toán
+                </th>
+                <td>
+                    @Model.HINHTHUCTHANHTOAN.TenHinhThucThanhToan
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Hình thức vận chuyển
+                </th>
+                <td>
+                    @Model.HINHTHUCVANCHUYEN.TenHinhThucVanChuyen
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Ngày đặt hàng
+                </th>
+                <td>
+                    @Model.NgayDatHang
+                </td>
+            </tr>
+            <tr>
+                <th>
+                   Địa chỉ nhận hàng
+                </th>
+                <td>
+                    @Model.DiaChiGiao
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Ghi chú
+            </th>
+            <td>
+                @Model.GhiChu
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Tình trạng thanh toán
+            </th>
+            <td>
+                @Model.TinhTrangThanhToan
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Tình trạng giao hàng
+            </th>
+            <td>
+                @Model.TinhTrangGiaoHang
+            </td>
+        </tr>
+
+        <tr>
+            <th>Mã giảm giá đã sử dụng:</th>
+            <td>
+                @if (ViewBag.giamgia != null)
+                {
+                    WEB.Models.CHITIETGIAMGIA x = ViewBag.giamgia;
+                    var discountValue = x.MucGiamGia <= 100 ? $"{x.MucGiamGia}%" : $"{x.MucGiamGia} VND";
+                    <p>   @x.GIAMGIA.TenGiamGia @discountValue</p>
+                }
+                else
+                {
+                    <p>   Không dùng mã giảm giá nào</p>
+                }
+
+
+            </td>
+        </tr>
+        </table>
+    </div>
+
+    <!-- Product Display -->
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        <h3>Danh sách sản phẩm</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Sản phẩm</th>
+                    <th>Giá tiền</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.list   as List<WEB.Models.CHITIETDONHANG>)
+                {
+                    <tr>
+                        <td>
+                            <img src="@Url.Content("~/Content/SanPhamImage/" + item.SANPHAM.HinhAnh.Trim())" width="100" alt="@item.SANPHAM.TenSanPham">
+                        </td>
+                        <td>@item.SANPHAM.TenSanPham</td>
+                        <td>@item.GiaMua</td>
+                        <td>@item.SoLuongMua</td>
+                        <td>@(item.GiaMua * item.SoLuongMua)</td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="4" style="text-align:right">Tổng thanh toán:</td>
+                    <td>@ViewBag.TongThanhToan</td>
+                </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-primary" style="color: white; font: bold; text-decoration: none;" href="@Url.Action("DonHangCuaBan", "DonHangCuaBan")">Đơn hàng của bạn</a>
+    </div>
+</div>
+<style>
+ 
+table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+ 
+.profile-info th, .profile-info td {
+    padding: 10px 15px;
+    border: 1px solid #eaeaea;
+}
+
+.profile-info th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+ 
+.order-table th, .order-table td {
+    padding: 10px 15px;
+    border: 1px solid #eaeaea;
+    text-align: center;
+}
+
+.order-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.order-table tr:nth-child(even) {
+    background-color: #fcfcfc;
+}
+
+.order-table tr:hover {
+    background-color: #f1f1f1;
+}
+ 
+.btn-primary {
+    background-color: #ff5722;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #e64a19;
+}
+ 
+.order-actions a {
+    text-decoration: none;
+    color: #ff5722;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.order-actions a:hover {
+    color: #e64a19;
+}
+
+
+    .table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+        max-width: 768px
+    }
+
+.table th, .table td {
+    padding: 10px 15px;
+    border: 1px solid #eaeaea;
+    text-align: center;
+}
+
+.table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.table tr:nth-child(even) {
+    background-color: #fcfcfc;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+ 
+.table img {
+    max-width: 100px;
+    height: auto;
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
+}
+
+ 
+.profile-info th, .profile-info td, .order-table th, .order-table td, .table th, .table td {
+    white-space: nowrap;
+}
+
+ 
+    .btn-primary {
+        padding: 8px 16px;
+    }
+}
+
+
+</style>

@@ -1,0 +1,26 @@
+﻿@model WEB.Models.THUONGHIEU
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>THUONGHIEU</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TenThuongHieu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenThuongHieu)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MaThuongHieu }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,50 @@
+﻿@model WEB.Models.CHITIETDONHANG
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CHITIETDONHANG</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DONHANG.DiaChiGiao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DONHANG.DiaChiGiao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SANPHAM.TenSanPham)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SANPHAM.TenSanPham)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SoLuongMua)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoLuongMua)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GiaMua)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GiaMua)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

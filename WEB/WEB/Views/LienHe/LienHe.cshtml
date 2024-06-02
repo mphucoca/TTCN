@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "Liên Hệ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ 
+
+ 
+<br />
+
+<br />
+<h2>Nơi giải đáp toàn bộ mọi thắc mắc của bạn</h2>
+
+    <b>  LIÊN HỆ VỚI CHÚNG TÔI  </b>
+    @using (Html.BeginForm("Nhantinnhan", "LienHe", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <h4>Thông tin liên hệ</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Họ và tên:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("HoTen", null, new { @class = "form-control", placeholder = "Nhập họ và tên của bạn" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Email:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("Email", null, new { @class = "form-control", placeholder = "Nhập địa chỉ email của bạn" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Điện thoại:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("DienThoai", null, new { @class = "form-control", placeholder = "Nhập số điện thoại của bạn" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Nội dung:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextArea("NoiDung", null, new { @class = "form-control", placeholder = "Nhập nội dung tin nhắn của bạn" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary">Gửi thông tin</button>
+            </div>
+        </div>
+    }
+
+
+
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+    if (ViewBag.result == "no")
+    {
+        <div class="alert alert-danger">@ViewBag.SuccessMessage</div>
+    }
+    else
+    {
+        <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+    }
+}

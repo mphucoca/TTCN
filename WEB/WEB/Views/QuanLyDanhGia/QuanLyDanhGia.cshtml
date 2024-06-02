@@ -1,0 +1,71 @@
+﻿@model IEnumerable<WEB.Models.DANHGIA>
+@{
+    ViewBag.Title = "Quản Lý Đánh Giá";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Quản Lý Đánh Giá </h2>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    Mã Đánh Giá
+                </th>
+                <th>
+                    Họ Tên
+                </th>
+                <th>
+                    Nội Dung
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Sản Phẩm
+                </th>
+                <th>
+                    Thời Gian
+                </th>
+                <th>
+                    Hình Ảnh
+                </th>             
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaDanhGiaSanPham)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoTen)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NoiDungDanhGia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.SANPHAM.TenSanPham)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ThoiGian)
+                </td>             
+                <td>
+                    <img src="@Url.Content("~/Content/SanPhamImage/" + item.HinhAnh)" alt="Hình ảnh" style="max-width: 100px; max-height: 100px;" />
+                </td>
+                <td>
+                    @Html.ActionLink("Xóa", "XoaDanhGia", new { id = item.MaDanhGiaSanPham }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

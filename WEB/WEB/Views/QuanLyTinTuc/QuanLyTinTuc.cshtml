@@ -1,0 +1,69 @@
+﻿@model IEnumerable<WEB.Models.TINTUC>
+@{
+    ViewBag.Title = "Quản Lý Tin Tức";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Quản Lý Tin Tức </h2>
+
+<p>
+    @Html.ActionLink("Thêm Tin Tức", "TaoTinTuc", "QuanLyTinTuc")
+</p>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    Mã Tin Tức
+                </th>
+                <th>
+                    Tiêu Đề
+                </th>
+                <th>
+                    Nội Dung
+                </th>
+                <th>
+                    Hình Ảnh
+                </th>
+                <th>
+                    Thời Gian
+                </th>
+                <th>
+                    Người Đăng
+                </th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaTinTuc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TieuDe)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NoiDung)
+                    </td>                  
+                    <td>
+                        <img src="@Url.Content("~/Content/Tintucimage/" + item.HinhAnh)" alt="Hình ảnh" style="max-width: 100px; max-height: 100px;" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ThoiGian)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NHANVIEN.HoTen)
+                    </td>                   
+                    <td>
+                        @Html.ActionLink("Sửa", "SuaTinTuc", new { id = item.MaTinTuc }, new { @class = "btn btn-primary" }) 
+
+                        @Html.ActionLink("Xóa", "XoaTinTuc", new { id = item.MaTinTuc}, new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+            }   
+        </tbody>
+    </table>
+</div>

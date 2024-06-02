@@ -1,0 +1,86 @@
+﻿@model WEB.Models.TINTUC
+@{
+    ViewBag.Title = "Tao Tin Tức";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Tạo Một Tin Tức Mới</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-container">
+    <h4 style="margin:20px;">Nhập Thông Tin Tin Tức</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.TieuDe)
+        @Html.EditorFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(model => model.NoiDung)
+        @Html.TextAreaFor(model => model.NoiDung, new { @class = "form-control", rows = 4 })
+        @Html.ValidationMessageFor(model => model.NoiDung, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group row">
+        @Html.Label("Hình Ảnh", htmlAttributes: new { @class = "control-label " })
+        <div>
+            <input type="file" id="HinhAnh" name="HinhAnh" class="form-control-file" accept="image/*" onchange="previewImage(event)" />
+            <img id="preview" src="#" alt="Image Preview" style="display:none; max-width:100px; height: 100px; margin-top: 10px;" />
+        </div>
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(model => model.ThoiGian)
+        @Html.EditorFor(model => model.ThoiGian, new { htmlAttributes = new { @class = "form-control", id = "ThoiGian" } })
+        @Html.ValidationMessageFor(model => model.ThoiGian, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(model => model.MaNhanVien, "Nhân Viên", htmlAttributes: new { @class = "control-label  " })
+        <div>
+            @Html.DropDownList("MaNhanVien", (SelectList)ViewBag.MaNhanVien, "Người Đăng", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.MaNhanVien, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <input type="submit" value="Tạo Tin Tức" class="btn btn-default" />
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Quay Lại", "QuanLyTinTuc", "QuanLyTinTuc", null, new { @class = "btn-link" })
+</div>
+
+@section Scripts {
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function updateThoiGian() {
+            var now = new Date();
+            var formattedTime = now.getFullYear() + '-'
+                + ('0' + (now.getMonth() + 1)).slice(-2) + '-'
+                + ('0' + now.getDate()).slice(-2) + ' '
+                + ('0' + now.getHours()).slice(-2) + ':'
+                + ('0' + now.getMinutes()).slice(-2) + ':'
+                + ('0' + now.getSeconds()).slice(-2);
+            document.getElementById('ThoiGian').value = formattedTime;
+        }
+
+        setInterval(updateThoiGian, 1000); // Cập nhật mỗi giây
+
+        // Gọi hàm để thiết lập thời gian ngay khi trang được tải
+        updateThoiGian();
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,310 @@
+﻿@model WEB.Models.SANPHAM
+@{
+    ViewBag.Title = "Chi Tiết Sản Phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<a class="back-link" style="color: darkblue; font-weight: bold; text-decoration: none;" href="@Url.Action("DsSanPhamByMaDanhMuc", "XemSanPhamTheoDanhMuc", new { id = Model.MaDanhMuc })">Quay Lại</a>
+
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="product-card">
+            <img src="@Url.Content("~/Content/SanPhamImage/" + Model.HinhAnh.Trim())" class="product-image img-fluid" alt="@Model.TenSanPham">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="product-info">
+
+            <p><strong>Mã sản phẩm:</strong> @Model.MaSanPham</p>
+            <p><strong>Thương hiệu:</strong> @Model.THUONGHIEU.TenThuongHieu</p>
+            <h5 class="product-name">@Model.TenSanPham</h5>
+            @if (Model.CHITIETGIAMGIAs.Any(ct => ct.MaSanPham == Model.MaSanPham && (ct.Giamua == null || ct.Giamua == 0) && ct.GIAMGIA.NgayKetThuc > DateTime.Now && ct.GIAMGIA.NgayBatDau < DateTime.Today))
+            {
+                var chitiet = Model.CHITIETGIAMGIAs.FirstOrDefault(ct => ct.MaSanPham == Model.MaSanPham && (ct.Giamua == null || ct.Giamua == 0));
+                var giamGia = chitiet.MucGiamGia;
+                var giaMoi = Model.GiaTien - (Model.GiaTien * giamGia / 100);
+                <p class="product-price">
+                    <del style="font-size: x-small;">@Model.GiaTien VND</del> @String.Format("{0:0,0}", giaMoi) VND
+                    (<span style="color: red;font-size: x-small;">-@giamGia%</span>)
+                </p>
+            }
+            else
+            {
+                <p class="product-price">@Model.GiaTien VND</p>
+            }
+            <p><strong>Dung tích:</strong> @Model.DungTich</p>
+
+
+
+            <div class="quantity-select">
+                <label for="quantity">Số lượng:</label>
+                <button type="button" class="btn-quantity" id="decrease-quantity">-</button>
+                <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control" style="width: 70px; display: inline-block; margin-right: 10px;">
+                <button type="button" class="btn-quantity" id="increase-quantity">+</button>
+            </div>
+            <span class=" "><span class="white">Đơn hàng được miễn phí vận chuyển<span></span></span></span>
+            <div class="row">
+                <button class="AddToCart btn btn-primary" data-product-id="@Model.MaSanPham" data-product-name="@Model.TenSanPham" data-product-price="@Model.GiaTien" data-product-dungtich="@Model.DungTich" data-product-hinhanh="@Model.HinhAnh" data-product-thuonghieu="@Model.THUONGHIEU.TenThuongHieu" data-product-quantity="1">Thêm Giỏ Hàng</button>
+                <button class="BuyNow btn btn-primary" data-product-id="@Model.MaSanPham" data-product-name="@Model.TenSanPham" data-product-price="@Model.GiaTien" data-product-dungtich="@Model.DungTich" data-product-hinhanh="@Model.HinhAnh" data-product-thuonghieu="@Model.THUONGHIEU.TenThuongHieu" data-product-quantity="1">
+                    <a style="color: white; font: bold; text-decoration: none;" href="@Url.Action("XemGioHang", "XemGioHang")">Thanh Toán</a>
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <p><strong>Mô tả:</strong> @Model.MoTa</p>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+
+    function updateQuantity() {
+        var quantity = $('#quantity').val();
+        $('.AddToCart, .BuyNow').data('product-quantity', quantity);
+    }
+
+    $('#quantity').on('change', function () {
+        if (parseInt($(this).val()) < 1) {
+            $(this).val(1);
+        }
+        updateQuantity();
+    });
+
+    $('#increase-quantity').on('click', function () {
+        var quantity = parseInt($('#quantity').val());
+        $('#quantity').val(quantity + 1);
+        updateQuantity();
+    });
+
+    $('#decrease-quantity').on('click', function () {
+        var quantity = parseInt($('#quantity').val());
+        if (quantity > 1) {
+            $('#quantity').val(quantity - 1);
+            updateQuantity();
+        }
+    });
+
+    $('.AddToCart').on('click', function () {
+        var productId = $(this).data('product-id');
+        var quantity = $(this).data('product-quantity');
+
+        $.ajax({
+            url: '@Url.Action("ThemSpVaoGioHang", "XemGioHang")',
+            type: 'POST',
+            data: { id: productId, quantity: quantity },
+            success: function (response) {
+                if (response.success) {
+                    alert("Sản phẩm đã được thêm vào giỏ hàng!");
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                alert("Đã có lỗi xảy ra, vui lòng thử lại!");
+            }
+        });
+
+        $.ajax({
+                    url: '/XemGioHang/UpdateQuantity',
+                    type: 'POST',
+                    data: { productId: productId, quantity: quantity },
+                    success: function (result) {
+                        location.reload();
+                    },
+                    error: function () {
+                        alert('Đã có lỗi xảy ra, vui lòng thử lại!');
+                    }
+                });
+
+    });
+    // Thanh toán ngay
+    $('.BuyNow').on('click', function () {
+        var productId = $(this).data('product-id');
+        var quantity = $(this).data('product-quantity');
+
+        $.ajax({
+            url: '@Url.Action("ThemSpVaoGioHang", "XemGioHang")',
+            type: 'POST',
+            data: { id: productId, quantity: quantity },
+            success: function (response) {
+                if (response.success) {
+                     
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                alert("Đã có lỗi xảy ra, vui lòng thử lại!");
+            }
+        });
+
+        $.ajax({
+                    url: '/XemGioHang/UpdateQuantity',
+                    type: 'POST',
+                    data: { productId: productId, quantity: quantity },
+                    success: function (result) {
+                        location.reload();
+                    },
+                    error: function () {
+                        alert('Đã có lỗi xảy ra, vui lòng thử lại!');
+                    }
+                });
+
+    });
+ 
+});
+</script>
+
+<style>
+    /* CSS for Product Details Page */
+
+    .product-card {
+        border: 1px solid #eaeaea;
+        border-radius: 8px;
+        padding: 16px;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin-bottom: 16px;
+    }
+
+    .product-image {
+        max-width: 100%;
+        border-radius: 8px;
+    }
+
+    .product-info {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+        .product-info p {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .product-info .product-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #ff5722;
+        }
+
+    .product-price {
+        font-size: 20px;
+        font-weight: bold;
+        color: #ff5722;
+        margin-bottom: 16px;
+    }
+
+        .product-price del {
+            color: #999;
+            margin-right: 8px;
+        }
+
+    .quantity-select {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+        .quantity-select label {
+            font-size: 16px;
+            font-weight: normal;
+            margin-right: 10px;
+        }
+
+        .quantity-select input {
+            display: inline-block;
+            width: 70px;
+            text-align: center;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            margin: 0 10px;
+        }
+
+    .btn-quantity {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        border-radius: 4px;
+        background-color: #ff5722;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+    }
+
+        .btn-quantity:hover {
+            background-color: #e64a19;
+        }
+
+    .free-shipping {
+        display: block;
+        margin-bottom: 16px;
+        font-size: 14px;
+        color: #ff5722;
+    }
+
+    .btn {
+        display: inline-block;
+        width: calc(50% - 10px);
+        margin: 5px;
+        padding: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        border-radius: 4px;
+        background-color: #ff5722;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .btn:hover {
+            background-color: #e64a19;
+        }
+
+    .AddToCart {
+        background-color: #ff5722;
+    }
+
+    .BuyNow {
+        background-color: #ff5722;
+    }
+
+    .btn-primary {
+        background-color: #ff5722;
+        border-color: #ff5722;
+    }
+
+        .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+            background-color: #e64a19;
+            border-color: #e64a19;
+        }
+    .back-link {
+        color: darkblue;
+        font-weight: bold;
+        text-decoration: none;
+        transition: color 0.3s;
+        width: 300px;
+        height: 100px;
+    }
+
+        .back-link:hover {
+            color: blue;
+        }
+
+</style>

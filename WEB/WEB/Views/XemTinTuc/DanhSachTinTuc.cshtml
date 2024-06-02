@@ -1,0 +1,55 @@
+﻿
+@model  IEnumerable<WEB.Models.TINTUC>
+
+@{
+    ViewBag.Title = "Danh Sách Tin Tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .news-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+
+        .news-item img {
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+
+        .news-item .details {
+            flex-grow: 1;
+        }
+
+        .news-item h3 {
+            margin-top: 0;
+        }
+</style>
+
+<br />
+<br />
+<h2>Tin tức</h2>
+
+<p></p>
+
+@foreach (var item in Model)
+{
+    <div class="news-item">
+        <img src="@Url.Content("~/Content/Tintucimage/" + item.HinhAnh.Trim())" width="200" alt="Hình ảnh tin tức">
+
+        <div class="details">
+            <h3>@Html.DisplayFor(modelItem => item.TieuDe)</h3>
+            <p>@Html.DisplayFor(modelItem => item.ThoiGian)</p>
+            @Html.ActionLink("Chi Tiết", "ChiTietTinTuc", new { id = item.MaTinTuc })
+        </div>
+    </div>
+}
+@if (ViewBag.message != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.message
+    </div>
+}

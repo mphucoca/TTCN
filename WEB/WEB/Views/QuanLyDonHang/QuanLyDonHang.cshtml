@@ -1,0 +1,190 @@
+﻿@model IEnumerable<WEB.Models.DONHANG>
+
+@{
+    ViewBag.Title = "Quản lý đơn hàng";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+<meta charset="UTF-8">
+
+<h1>Quản lý đơn hàng</h1>
+<h3>Danh sách các đơn hàng</h3>
+
+<table class="order-table ">
+    <tr>
+        <th>Hình thức thanh toán</th>
+        <th>Hình thức vận chuyển</th>
+        <th>Ngày đặt hàng</th>
+        <th>Địa chỉ</th>
+        <th>Ghi chú</th>
+        <th>Tình trạng thanh toán</th>
+        <th>Tình trạng giao hàng</th>
+        <th>Mã Giảm Giá</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.HINHTHUCTHANHTOAN.TenHinhThucThanhToan)</td>
+            <td>@Html.DisplayFor(modelItem => item.HINHTHUCVANCHUYEN.TenHinhThucVanChuyen)</td>
+            <td>@Html.DisplayFor(modelItem => item.NgayDatHang)</td>
+            <td>@Html.DisplayFor(modelItem => item.DiaChiGiao)</td>
+            <td>@Html.DisplayFor(modelItem => item.GhiChu)</td>
+            <td>
+                <select class="payment-status" data-order-id="@item.MaDonHang">
+                    <option value="Chưa thanh toán" @(item.TinhTrangThanhToan == "Chưa thanh toán" ? "selected" : "")>Chưa thanh toán</option>
+                    <option value="Đã thanh toán" @(item.TinhTrangThanhToan == "Đã thanh toán" ? "selected" : "")>Đã thanh toán</option>
+                    <option value="Đã hoàn tiền" @(item.TinhTrangThanhToan == "Đã hoàn tiền" ? "selected" : "")>Đã hoàn tiền</option>
+                </select>
+            </td>
+            <td>
+                <select class="delivery-status" data-order-id="@item.MaDonHang">
+                    <option value="Chờ xác nhận" @(item.TinhTrangGiaoHang == "Chờ xác nhận" ? "selected" : "")>Chờ xác nhận</option>
+                    <option value="Đang chuẩn bị hàng" @(item.TinhTrangGiaoHang == "Đang chuẩn bị hàng" ? "selected" : "")>Đang chuẩn bị hàng</option>
+                    <option value="Đang giao" @(item.TinhTrangGiaoHang == "Đang giao" ? "selected" : "")>Đang giao</option>
+                    <option value="Đã giao" @(item.TinhTrangGiaoHang == "Đã giao" ? "selected" : "")>Đã giao</option>
+                    <option value="Đã hủy" @(item.TinhTrangGiaoHang == "Đã hủy" ? "selected" : "")>Đã hủy</option>
+                </select>
+            </td>
+            <td>@Html.DisplayFor(modelItem => item.GIAMGIA.TenGiamGia)</td>
+            <td class="order-actions">@Html.ActionLink("Chi Tiết", "ChiTietDonHang", new { id = item.MaDonHang })</td>
+        </tr>
+    }
+</table>
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.payment-status, .delivery-status').change(function () {
+                var orderId = $(this).data('order-id');
+                var paymentStatus = $(this).closest('tr').find('.payment-status').val();
+                var deliveryStatus = $(this).closest('tr').find('.delivery-status').val();
+
+                $.ajax({
+                    url: '@Url.Action("UpdateOrderStatus", "QuanLyDonHang")',
+                    type: 'POST',
+                    data: {
+                        orderId: orderId,
+                        paymentStatus: paymentStatus,
+                        deliveryStatus: deliveryStatus
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            alert("Cập nhật trạng thái đơn hàng thành công!");
+                        } else {
+                            alert("Lỗi cập nhật: " + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Lỗi cập nhật.");
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<style>
+    /* General styling for table */
+    table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+        font-family: 'Arial', sans-serif;
+        font-size: 14px;
+    }
+
+    /* Profile info table styling */
+    .profile-info th, .profile-info td {
+        padding: 10px 15px;
+        border: 1px solid #eaeaea;
+    }
+
+    .profile-info th {
+        background-color: #f5f5f5;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* Order table styling */
+    .order-table th, .order-table td {
+        padding: 10px 15px;
+        border: 1px solid #eaeaea;
+        text-align: center;
+    }
+
+    .order-table th {
+        background-color: #f5f5f5;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .order-table tr:nth-child(even) {
+        background-color: #fcfcfc;
+    }
+
+    .order-table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Button styling */
+    .btn-primary {
+        background-color: #ff5722;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #e64a19;
+        }
+
+    /* Order actions link styling */
+    .order-actions a {
+        text-decoration: none;
+        color: #ff5722;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+        .order-actions a:hover {
+            color: #e64a19;
+        }
+
+    /* Product table styling */
+    .table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+    }
+
+        .table th, .table td {
+            padding: 10px 15px;
+            border: 1px solid #eaeaea;
+            text-align: center;
+        }
+
+        .table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Responsive design for smaller screens */
+        .profile-info th, .profile-info td, .order-table th, .order-table td, .table th, .table td {
+            white-space: nowrap;
+        }
+    }
+</style>

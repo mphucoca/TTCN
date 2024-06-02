@@ -1,0 +1,192 @@
+﻿@model List<WEB.Models.CHITIETGIOHANG>
+
+@{
+    ViewBag.Title = "Giỏ hàng của bạn";
+}
+
+<h2>Giỏ hàng của bạn</h2>
+<a class="btn btn-primary" style="color: white; font: bold; text-decoration: none;" href="@Url.Action("DonHangCuaBan", "DonHangCuaBan")">Đơn hàng của bạn</a>
+<table class="table">
+    <thead>
+        <tr position: absolute;>
+            <th></th>
+            <th>Sản phẩm</th>
+            <th>Thương Hiệu</th>
+            <th>Giá tiền</th>
+            <th>Số lượng</th>
+
+            <th>
+                <a href="@Url.Action("DatHang","DatHang")" class="checkout" title="Thanh toán ngay" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background: #ee4d2d; color: white; text-decoration: none; border-radius: 4px;">
+                    Thanh toán ngay
+                </a>
+            </th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+        @if (Model == null || !Model.Any())
+        {
+            <tr>
+                <td colspan="6"><p>Giỏ hàng trống! Hãy thêm sản phẩm @Html.ActionLink("Tiếp tục", "Index", "Home") </p></td>
+            </tr>
+
+
+
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@Url.Content("~/Content/SanPhamImage/" + item.SANPHAM.HinhAnh.Trim())" width="100" class="product-image" alt="@item.SANPHAM.TenSanPham">
+                </td>
+                <td>@item.SANPHAM.TenSanPham</td>
+
+                <td>@item.SANPHAM.THUONGHIEU.TenThuongHieu</td>
+                <td>
+
+                    @if (item.SANPHAM.CHITIETGIAMGIAs.Any(ct => ct.MaSanPham == item.MaSanPham && (ct.Giamua == null || ct.Giamua == 0) && ct.GIAMGIA.NgayKetThuc > DateTime.Now && ct.GIAMGIA.NgayBatDau < DateTime.Today))
+                    {
+                        var chitiet = item.SANPHAM.CHITIETGIAMGIAs.FirstOrDefault(ct => ct.MaSanPham == item.MaSanPham && (ct.Giamua == null || ct.Giamua == 0));
+                        var giamGia = chitiet.MucGiamGia;
+                        var giaMoi = item.SANPHAM.GiaTien - (item.SANPHAM.GiaTien * giamGia / 100);
+                        <p class="product-price">
+                            <del style="font-size: x-small;">@item.SANPHAM.GiaTien VND</del> @String.Format("{0:0,0}", giaMoi) VND
+                            (<span style="color: red;font-size: x-small;">-@giamGia%</span>)
+                        </p>
+
+
+
+                    }
+                    else
+                    {
+                        <p class="product-price">@item.SANPHAM.GiaTien VND</p>
+
+
+                    }
+                </td>
+                <td>
+                    <div class="quantity-select">
+                        <button type="button" class="btn-quantity decrease-quantity" data-id="@item.MaSanPham">-</button>
+                        <input type="number" class="quantity" value="@item.SoLuong" min="1" max="999" data-id="@item.MaSanPham" />
+                        <button type="button" class="btn-quantity increase-quantity" data-id="@item.MaSanPham">+</button>
+                    </div>
+                </td>
+
+                <td>
+
+                    <button class="delete" data-id="@item.MaSanPham" style=" background-color: #f44336; color: white; border: none;padding: 5px 10px; border-radius: 4px; cursor: pointer; ">x</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            function updateQuantity(productId, quantity) {
+                $.ajax({
+                    url: '/XemGioHang/UpdateQuantity',
+                    type: 'POST',
+                    data: { productId: productId, quantity: quantity },
+                    success: function (result) {
+                        location.reload();
+                    },
+                    error: function () {
+                        alert('Đã có lỗi xảy ra, vui lòng thử lại!');
+                    }
+                });
+            }
+            function updateQuantityOnChange(input) {
+                var productId = input.data('id');
+                var quantity = input.val();
+                updateQuantity(productId, quantity);
+            }
+
+
+
+            $('.quantity').change(function () {
+                updateQuantityOnChange($(this));
+            });
+            $('.increase-quantity').click(function () {
+                var input = $(this).siblings('.quantity');
+                var currentValue = parseInt(input.val());
+                input.val(currentValue + 1);
+                var productId = $(this).data('id');
+                updateQuantity(productId, input.val());
+            });
+
+            $('.decrease-quantity').click(function () {
+                var input = $(this).siblings('.quantity');
+                var currentValue = parseInt(input.val());
+                if (currentValue > 1) {
+                    input.val(currentValue - 1);
+                    var productId = $(this).data('id');
+                    updateQuantity(productId, input.val());
+                }
+            });
+
+
+            $('.delete').click(function () {
+                var productId = $(this).data('id');
+                $.ajax({
+                    url: '/XemGioHang/DeleteFromCart',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (result) {
+                        location.reload();
+                    },
+                    error: function () {
+                        alert('Đã có lỗi xảy ra, vui lòng thử lại!');
+                    }
+                });
+            });
+        });
+
+
+
+
+
+
+
+
+
+    </script>
+}
+
+<style>
+    .quantity-select {
+        display: flex;
+        align-items: center;
+    }
+
+    .btn-quantity {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        border-radius: 4px;
+        background-color: #ff5722;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+    }
+
+        .btn-quantity:hover {
+            background-color: #e64a19;
+        }
+
+    .quantity {
+        display: inline-block;
+        width: 70px;
+        text-align: center;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        padding: 5px;
+        margin: 0 10px;
+    }
+</style>

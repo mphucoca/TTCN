@@ -1,0 +1,292 @@
+﻿<!DOCTYPE html>                                                                                                                                                  
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css" )
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("NIPERUME", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Giới thiệu", "About", "Home")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Danh mục <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            @{
+                                WEB.Models.Model1 db = new WEB.Models.Model1();
+                                // Lấy danh sách các danh mục từ cơ sở dữ liệu                       
+                                List<WEB.Models.DANHMUC> danhMucList = db.DANHMUCs.ToList();// Code để lấy danh sách từ cơ sở dữ liệu;
+                            }
+                            @foreach (var danhMuc in danhMucList)
+                            {
+                                <li>@Html.ActionLink(danhMuc.TenDanhMuc, "DsSanPhamByMaDanhMuc", "XemSanPhamTheoDanhMuc", new { id = danhMuc.MaDanhMuc }, null)</li>
+                            }
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Thương hiệu <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            @{
+                                // Lấy danh sách các danh mục từ cơ sở dữ liệu
+                                List<WEB.Models.THUONGHIEU> thuongHieuList = db.THUONGHIEUx.ToList();// Code để lấy danh sách từ cơ sở dữ liệu;
+                            }
+                            @foreach (var thuongHieu in thuongHieuList)
+                            {
+                                <li>@Html.ActionLink(thuongHieu.TenThuongHieu, "DsSanPhamByMaThuongHieu", "XemSanPhamTheoThuongHieu", new { id = thuongHieu.MaThuongHieu }, null)</li>
+                            }
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("Blog", "DanhSachTinTuc", "XemTinTuc")</li>
+                    <li>@Html.ActionLink("Liên hệ", "LienHe", "LienHe")</li>
+                    <li>@Html.ActionLink("Kiểm tra đơn hàng", "KiemTraDonHang", "KiemTraDonHang")</li>
+
+                    @if (Session["username"] == null)
+                    {
+                        <li>@Html.ActionLink("Đăng Nhập", "DangNhap", "DangNhap")</li>
+                    }
+                    else
+                    {
+                        <li>
+                            @{
+                                string link = "[" + @Session["Hoten"] + "] Đăng Xuất";
+                            }
+                            @Html.ActionLink(link, "DangXuat", "DangXuat")
+                        </li>
+                    }
+                    @if (Session["Phanquyen"] != null && (String)Session["Phanquyen"] == "admin".Trim())
+                    {
+                        <li>@Html.ActionLink("Quản Lý Website", "Index", "QuanLyWebsite")</li>
+                    }
+                    <div style="position: absolute; top: 15px; right: 200px;">
+                        <a style="color: white; font: bold; text-decoration: none;" href="@Url.Action("XemGioHang", "XemGioHang")">Giỏ Hàng</a>
+                    </div>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <style>
+        /* CSS cho phần MenuBar */
+        .sidebar {
+            position: fixed; /* Đặt vị trí cố định */
+            top: 0; /* Dính sát vào phía trên của trang */
+            left: 0; /* Dính sát vào phía trái của trang */
+            height: 100%; /* Độ cao 100% của trang */
+            width: 15%; /* Độ rộng là 15% của trang */
+            background-color: #343a40; /* Màu nền của MenuBar */
+            overflow-y: auto; /* Cho phép cuộn nếu nội dung vượt qua chiều cao */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Hiệu ứng đổ bóng */
+            font-family: Arial, sans-serif; /* Font chữ */
+        }
+
+            .sidebar h3 {
+                margin-top: 20px; /* Khoảng cách từ đỉnh của MenuBar đến tiêu đề */
+                text-align: center; /* Căn giữa tiêu đề */
+                color: #fff; /* Màu chữ */
+            }
+
+            .sidebar ul {
+                list-style-type: none; /* Xóa dấu đầu dòng của danh sách */
+                padding: 0; /* Xóa padding mặc định */
+            }
+
+                .sidebar ul li {
+                    padding: 10px; /* Khoảng cách giữa các mục trong danh sách */
+                }
+
+                    .sidebar ul li a {
+                        color: #fff; /* Màu chữ mặc định */
+                        text-decoration: none; /* Xóa gạch chân */
+                        transition: color 0.3s; /* Hiệu ứng màu chữ khi hover */
+                    }
+
+                        .sidebar ul li a:hover {
+                            color: #ff69b4; /* Màu chữ khi hover */
+                        }
+
+        /* CSS cho phần hiển thị nội dung */
+        .container.body-content {
+            margin-left: 15%; /* Để tránh việc nội dung bị che khuất bởi MenuBar */
+        }
+
+        /* Đảm bảo nội dung không bị che khuất bởi phần MenuBar */
+
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table-bordered {
+            border: 1px solid #dee2e6;
+        }
+
+            .table-bordered th,
+            .table-bordered td {
+                border: 1px solid #dee2e6;
+            }
+
+            .table-bordered thead th {
+                border-top: 2px solid #dee2e6;
+            }
+
+            .table-bordered thead th,
+            .table-bordered thead td {
+                background-color: #343a40;
+                color: #fff;
+            }
+
+            .table-bordered tbody td {
+                background-color: #f8f9fa;
+            }
+
+        .btn {
+            border-radius: 20px;
+            padding: 5px 10px;
+        }
+
+            .btn:hover {
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            }
+
+        .form-container {
+            width: 50%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+
+            .form-group input[type="text"],
+            .form-group input[type="password"],
+            .form-group input[type="email"],
+            .form-group select,
+            .form-group textarea,
+            .form-group input[type="file"] {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #dddfe2;
+                border-radius: 5px;
+                background-color: #f0f2f5;
+            }
+
+            .form-group input[type="submit"] {
+                background-color: #1877f2;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+                .form-group input[type="submit"]:hover {
+                    background-color: #166fe5;
+                }
+
+        .btn-link {
+            color: #1877f2;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+            .btn-link:hover {
+                text-decoration: underline;
+            }
+
+        .info-container {
+            background-color: #f6f7f8;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .info-value {
+            color: #666;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: #fff;
+        }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
+            }
+    </style>
+    <div class="container body-content">
+        <div class="container-fluid">
+            <div class="row">
+                
+                    <!-- Menu bar bảo trì quản lý thông tin website -->
+                    <div class="sidebar">
+                        <h3>Menu Bar</h3>
+                        <ul>
+                            <li>@Html.ActionLink("Trang chủ", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Quản lý tài khoản", "QuanLyTaiKhoan", "QuanLyTaiKhoan")</li>
+                            <li>@Html.ActionLink("Quản lý sản phẩm", "QuanLySanPham", "QuanLySanPham")</li>
+                            <li>@Html.ActionLink("Quản lý danh mục", "QuanLyDanhMuc", "QuanLyDanhMuc")</li>
+                            <li>@Html.ActionLink("Quản lý thương hiệu", "QuanLyThuongHieu", "QuanLyThuongHieu")</li>
+                            <li>@Html.ActionLink("Quản lý cửa hàng", "QuanLyCuaHang", "QuanLyCuaHang")</li>
+                            <li>@Html.ActionLink("Quản lý tin tức", "QuanLyTinTuc", "QuanLyTinTuc")</li>
+                            <li>@Html.ActionLink("Quản lý hình thức thanh toán", "QuanLyHinhThucThanhToan", "QuanLyHinhThucThanhToan")</li>
+                            <li>@Html.ActionLink("Quản lý hình thức vận chuyển", "QuanLyHinhThucVanChuyen", "QuanLyHinhThucVanChuyen")</li>
+                            <li>@Html.ActionLink("Quản lý giảm giá", "QuanLyGiamGia", "QuanLyGiamGia")</li>
+                            <li>@Html.ActionLink("Quản lý đơn hàng", "QuanLyDonHang", "QuanLyDonHang")</li>
+                            <li>@Html.ActionLink("Quản lý tin nhắn", "QuanLyTinNhan", "QuanLyTinNhan")</li>
+                            <li>@Html.ActionLink("Quản lý nhân viên", "QuanLyNhanVien", "QuanLyNhanVien")</li>
+                            <li>@Html.ActionLink("Quản lý đánh giá", "QuanLyDanhGia", "QuanLyDanhGia")</li>
+                            <li>@Html.ActionLink("Quản lý bình luận", "QuanLyBinhLuan", "QuanLyBinhLuan")</li>
+                            <!-- Thêm các action link khác cho bảo trì quản lý thông tin website -->
+                        </ul>
+                    </div>
+              
+                <div class="col-md-10">
+                    <!-- Phần hiển thị giao diện bảo trì quản lý thông tin -->
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

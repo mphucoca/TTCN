@@ -1,0 +1,161 @@
+﻿@model List<WEB.Models.CHITIETGIOHANG>
+
+@{
+    ViewBag.Title = "Đặt Hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Nhập thông tin đơn hàng của bạn</h2>
+
+@using (Html.BeginForm("DatHang", "DatHang", FormMethod.Post, new { id = "orderForm" }))
+{
+<div class="row">
+    <!-- Form for Order Information -->
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        <h3>Thông tin giao hàng</h3>
+        <table>
+            <tr>
+                <th>Họ tên</th>
+                <td>@ViewBag.hoten</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>@ViewBag.email</td>
+            </tr>
+            <tr>
+                <th>Số điện thoại</th>
+                <td>@ViewBag.sodienthoai</td>
+            </tr>
+        </table>
+        <div class="form-group">
+            @Html.Label("Địa Chỉ")
+            @Html.TextBox("DiaChi", null, new { @class = "form-control", id = "DiaChi" })
+        </div>
+        <div class="form-group">
+            @Html.Label("Ghi Chú")
+            @Html.TextBox("ghichu", null, new { @class = "form-control" })
+        </div>
+        <h3>Phương thức thanh toán</h3>
+        @foreach (var paymentMethod in ViewBag.PhuongThucThanhToan as List<WEB.Models.HINHTHUCTHANHTOAN>)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="MaHinhThucThanhToan" value="@paymentMethod.MaHinhThucThanhToan" id="payment-@paymentMethod.MaHinhThucThanhToan">
+                <label class="form-check-label" for="payment-@paymentMethod.MaHinhThucThanhToan">
+                    @paymentMethod.TenHinhThucThanhToan
+                </label>
+            </div>
+        }
+
+        <h3>Phương thức vận chuyển</h3>
+        @foreach (var shippingMethod in ViewBag.PhuongThucVanChuyen as List<WEB.Models.HINHTHUCVANCHUYEN>)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="MaHinhThucVanChuyen" value="@shippingMethod.MaHinhThucVanChuyen" id="shipping-@shippingMethod.MaHinhThucVanChuyen">
+                <label class="form-check-label" for="shipping-@shippingMethod.MaHinhThucVanChuyen">
+                    @shippingMethod.TenHinhThucVanChuyen
+                </label>
+            </div>
+        }
+    </div>
+    <h3>Mã Giảm Giá</h3>
+    <div class="form-group">
+        <select class="form-control" id="discountCode" name="MaGiamGia">
+            <option value="">Chọn mã giảm giá</option>
+            @foreach (var discount in ViewBag.voucherlist)
+            {
+                 foreach (var detail in discount.CHITIETGIAMGIAs)
+                {
+                    var discountValue = detail.MucGiamGia <= 100 ? $"{detail.MucGiamGia}%" : $"{detail.MucGiamGia} VND";
+                    <option value="@discount.MaGiamGia">@discount.TenGiamGia - @discountValue</option>
+                }
+            }
+        </select>
+    </div>
+    <!-- Product Display -->
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        <h3>Danh sách sản phẩm</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th> </th>
+                    <th>Sản phẩm</th>
+                    <th>Giá tiền</th>
+                    <th>Số lượng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@Url.Content("~/Content/SanPhamImage/" + item.SANPHAM.HinhAnh.Trim())" width="100" alt="@item.SANPHAM.TenSanPham">
+                        </td>
+                        <td>@item.SANPHAM.TenSanPham</td>
+                        <td>
+                            @if (item.SANPHAM.CHITIETGIAMGIAs.Any(ct => ct.MaSanPham == item.MaSanPham && (ct.Giamua == null || ct.Giamua == 0) && ct.GIAMGIA.NgayKetThuc > DateTime.Now && ct.GIAMGIA.NgayBatDau < DateTime.Today))
+                            {
+                                var chitiet = item.SANPHAM.CHITIETGIAMGIAs.FirstOrDefault(ct => ct.MaSanPham == item.MaSanPham && (ct.Giamua == null || ct.Giamua == 0));
+                                var giamGia = chitiet.MucGiamGia;
+                                var giaMoi = item.SANPHAM.GiaTien - (item.SANPHAM.GiaTien * giamGia / 100);
+                                <p>
+                                    <del style="font-size: x-small;">@item.SANPHAM.GiaTien VND</del> @String.Format("{0:0,0}", giaMoi) VND
+                                    (<span style="color: red; font-size: x-small;">-@giamGia%</span>)
+                                </p>
+                            }
+                            else
+                            {
+                                <p>@item.SANPHAM.GiaTien VND</p>
+                            }
+                        </td>
+                        <td>@item.SoLuong</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <input type="submit" value="Đặt hàng" class="btn btn-primary" />
+
+        <a class="btn btn-primary" style="color: white; font: bold; text-decoration: none;" href="@Url.Action("XemGioHang", "XemGioHang")">Quay Lại Giỏ Hàng</a>
+    </div>
+</div>
+}
+
+@section Scripts {
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', function (event) {
+            var diaChi = document.getElementById('DiaChi').value.trim();
+            var paymentMethods = document.getElementsByName('MaHinhThucThanhToan');
+            var shippingMethods = document.getElementsByName('MaHinhThucVanChuyen');
+            var paymentSelected = false;
+            var shippingSelected = false;
+
+            for (var i = 0; i < paymentMethods.length; i++) {
+                if (paymentMethods[i].checked) {
+                    paymentSelected = true;
+                    break;
+                }
+            }
+
+            for (var i = 0; i < shippingMethods.length; i++) {
+                if (shippingMethods[i].checked) {
+                    shippingSelected = true;
+                    break;
+                }
+            }
+
+            if (diaChi === '' || !paymentSelected || !shippingSelected) {
+                event.preventDefault();
+                alert('Vui lòng nhập đầy đủ thông tin địa chỉ, chọn phương thức thanh toán và phương thức vận chuyển.');
+            }
+
+        });
+    </script>
+}
+
+<style>
+    .form-control {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+</style>

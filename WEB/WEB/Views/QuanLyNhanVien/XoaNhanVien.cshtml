@@ -1,0 +1,46 @@
+﻿@model WEB.Models.NHANVIEN
+@{
+    ViewBag.Title = "Xóa Nhân Viên";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Xác Nhận Xóa Nhân Viên</h2>
+
+<div>
+    <div class="info-container">
+        <h4>Thông tin Nhân Viên</h4>
+        <hr />
+
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.MaNhanVien)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.MaNhanVien)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.HoTen)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.HoTen)</span>
+        </div>
+        
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.SDT)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.SDT)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.DiaChi)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.DiaChi)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.CUAHANG.TenCuaHang)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.CUAHANG.TenCuaHang)</span>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-danger" /> |
+            @Html.ActionLink("Quay Lại", "QuanLyNhanVien")
+        </div>
+    }
+</div>

@@ -1,0 +1,107 @@
+﻿@model WEB.Models.GIAMGIA
+
+@{
+    ViewBag.Title = "Sửa Giảm Giá"; Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Sửa Giảm Giá</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Thông tin giảm giá</h4>
+        <hr />
+        @Html.HiddenFor(model => model.MaGiamGia)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MoTa, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MoTa, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TenGiamGia, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TenGiamGia, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TenGiamGia, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NgayBatDau, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NgayBatDau, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NgayBatDau, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NgayKetThuc, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NgayKetThuc, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NgayKetThuc, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SoLuong, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SoLuong, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SoLuong, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Lưu" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<h3>Chi Tiết Giảm Giá</h3>
+<p>
+    @Html.ActionLink("Thêm Chi Tiết Giảm Giá", "ThemChiTietGiamGia", new { maGiamGia = Model.MaGiamGia })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CHITIETGIAMGIAs.FirstOrDefault().MaSanPham)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CHITIETGIAMGIAs.FirstOrDefault().MucGiamGia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CHITIETGIAMGIAs.FirstOrDefault().Giamua)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.CHITIETGIAMGIAs)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaSanPham)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MucGiamGia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Giamua)
+            </td>
+            <td>
+                @Html.ActionLink("Sửa", "SuaChiTietGiamGia", new { maSanPham = item.MaSanPham, maGiamGia = item.MaGiamGia }) |
+                @Html.ActionLink("Xóa", "XoaChiTietGiamGia", new { maSanPham = item.MaSanPham, maGiamGia = item.MaGiamGia })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div>
+    @Html.ActionLink("Quay lại", "QuanLyGiamGia")
+</div>

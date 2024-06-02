@@ -1,0 +1,51 @@
+﻿
+@model IEnumerable<WEB.Models.THUONGHIEU>
+@{
+    ViewBag.Title = "Quản Lý Thương Hiệu";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+
+
+
+
+
+
+<h2>Quản lý thông tin thương hiệu</h2>
+
+<p>
+    @Html.ActionLink("Thêm mới", "TaoThuongHieu", "QuanLyThuongHieu")
+</p>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    Mã Thương Hiệu
+                </th>
+                <th>
+                    Tên Thương Hiệu
+                </th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaThuongHieu)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenThuongHieu)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Chỉnh sửa", "SuaThuongHieu", new { id = item.MaThuongHieu }, new { @class = "btn btn-primary" })
+
+                        @Html.ActionLink("Xóa", "XoaThuongHieu", new { id = item.MaThuongHieu }, new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

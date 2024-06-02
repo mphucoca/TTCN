@@ -1,0 +1,53 @@
+﻿@model WEB.Models.TINTUC
+@{
+    ViewBag.Title = "Xóa Tin Tức";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Xác Nhận Xóa Tin Tức</h2>
+
+<div>
+    <div class="info-container">
+        <h4>Thông tin Tin Tức</h4>
+        <hr />
+
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.MaTinTuc)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.MaTinTuc)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.TieuDe)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.TieuDe)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.NoiDung)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.NoiDung)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.HinhAnh)</span>
+            <img id="preview" src="@(Model.HinhAnh != null ? Url.Content("~/Content/Tintucimage/" + Model.HinhAnh) : "#")" alt="Image Preview" style="display:@(Model.HinhAnh != null ? "block" : "none"); max-width:100px; height: 100px; margin-top: 10px;" />
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.ThoiGian)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.ThoiGian)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.NHANVIEN.HoTen)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.NHANVIEN.HoTen)</span>
+        </div>
+
+
+
+
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-danger" /> |
+            @Html.ActionLink("Quay Lại", "QuanLyTinTuc")
+        </div>
+    }
+</div>

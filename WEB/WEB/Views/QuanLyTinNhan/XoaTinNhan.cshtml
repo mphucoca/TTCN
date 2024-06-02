@@ -1,0 +1,49 @@
+﻿@model WEB.Models.TINNHAN
+@{
+    ViewBag.Title = "Xóa Tin Nhắn";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Xác Nhận Xóa Tin Nhắn</h2>
+
+<div>
+    <div class="info-container">
+        <h4>Thông tin Tin Nhắn</h4>
+        <hr />
+
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.MaTinNhan)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.MaTinNhan)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.Hoten)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.Hoten)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.Email)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.Email)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.SDT)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.SDT)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.NoiDung)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.NoiDung)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.CUAHANG.TenCuaHang)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.CUAHANG.TenCuaHang)</span>
+        </div>     
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-danger" /> |
+            @Html.ActionLink("Quay Lại", "QuanLyTinNhan")
+        </div>
+    }
+</div>

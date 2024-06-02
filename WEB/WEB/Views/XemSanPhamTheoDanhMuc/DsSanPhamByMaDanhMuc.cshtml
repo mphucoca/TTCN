@@ -1,0 +1,274 @@
+﻿@{
+    ViewBag.Title = "DsSanPhamByMaDanhMuc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<WEB.Models.SANPHAM>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-tAdeV3ZidHTq6JHcVG+RBhiMBh7LKh4P94yJ1oDNRwMhDZClM+4vUkPrV/mkJExEyE5dCdZ2TE8G3+gRKgZsKQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<h2>Xem danh sách sản phẩm @ViewBag.TenDanhMuc</h2>
+<style>
+
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+
+
+
+    .product-card:last-child {
+        margin-right: 0;
+    }
+
+    /* Font */
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    /* Header */
+    .header {
+        background-color: #fff;
+        border-bottom: 1px solid #ccc;
+        padding: 10px 20px;
+    }
+
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .header .navigation {
+            float: right;
+        }
+
+            .header .navigation ul {
+                list-style-type: none;
+            }
+
+                .header .navigation ul li {
+                    display: inline-block;
+                    margin-left: 20px;
+                }
+
+                    .header .navigation ul li a {
+                        color: #333;
+                        text-decoration: none;
+                        transition: color 0.3s ease;
+                    }
+
+                        .header .navigation ul li a:hover {
+                            color: #ee4d2d;
+                        }
+
+    /* Product Card */
+    .product-card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 20px;
+        transition: box-shadow 0.3s ease;
+    }
+
+        .product-card:hover {
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card .product-image {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product-card .product-info {
+            padding: 10px 0;
+        }
+
+            .product-card .product-info .product-name {
+                font-size: 16px;
+                margin-bottom: 5px;
+            }
+
+            .product-card .product-info .product-price {
+                font-size: 14px;
+                color: #333;
+            }
+
+                .product-card .product-info .product-price del {
+                    color: #999;
+                }
+
+            .product-card .product-info .btn-details,
+            .product-card .product-info .AddToCart {
+                display: block;
+                width: 100%;
+                margin-top: 10px;
+                padding: 8px 0;
+                text-align: center;
+                color: #fff;
+                background-color: #ee4d2d;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+                .product-card .product-info .btn-details:hover,
+                .product-card .product-info .AddToCart:hover {
+                    background-color: #333;
+                }
+
+    /* Modal */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        display: none;
+    }
+
+    #cart-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 20px;
+        z-index: 10000;
+        display: none;
+    }
+
+    .cart_btn-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 20px;
+    }
+
+    .cart_btn-continue {
+        text-align: center;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+
+    .checkout {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background: #ee4d2d;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+
+</style>
+
+@if (ViewBag.message != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.message
+    </div>
+}
+
+<div class="container">
+    <div class="row">
+        @foreach (var sanPham in Model)
+        {
+            <div class="col-md-3"  >
+                <div class="product-card">
+                    <img src="@Url.Content("~/Content/SanPhamImage/" + sanPham.HinhAnh.Trim())" class="product-image" alt="@sanPham.TenSanPham">
+
+                    <div class="product-info">
+                        <h5 class="product-name">@sanPham.TenSanPham</h5>
+                        @if (sanPham.CHITIETGIAMGIAs.Any(ct => ct.MaSanPham == sanPham.MaSanPham && (ct.Giamua == null || ct.Giamua == 0)&&ct.GIAMGIA.NgayKetThuc> DateTime.Now && ct.GIAMGIA.NgayBatDau < DateTime.Today))
+                        {
+                            var chitiet = sanPham.CHITIETGIAMGIAs.FirstOrDefault(ct => ct.MaSanPham == sanPham.MaSanPham && (ct.Giamua == null || ct.Giamua == 0));
+                            var giamGia = chitiet.MucGiamGia;
+                            var giaMoi = sanPham.GiaTien - (sanPham.GiaTien * giamGia / 100);
+                            <p class="product-price">
+                                <del style="font-size: x-small;">@sanPham.GiaTien VND</del> @String.Format("{0:0,0}", giaMoi) VND
+                                (<span style="color: red;font-size: x-small;">-@giamGia%</span>)
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="product-price">@sanPham.GiaTien VND</p>
+                        } 
+                      
+                        <a href="@Url.Action("XemChiTietSanPham", "XemSanPhamTheoDanhMuc", new { id = sanPham.MaSanPham })" class="btn btn-primary btn-details">Chi Tiết</a>
+                        <button class="AddToCart btn btn-primary" data-product-id="@sanPham.MaSanPham" data-product-name="@sanPham.TenSanPham" data-product-price="@sanPham.GiaTien" data-product-dungtich="@sanPham.DungTich" data-product-hinhanh="@sanPham.HinhAnh" data-product-thuonghieu="@sanPham.THUONGHIEU.TenThuongHieu">Thêm Giỏ Hàng</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal-overlay"></div>
+<div id="cart-modal">
+    <span class="cart_btn-close">&times;</span>
+    <div id="cart-item-details"></div>
+    <div class="cart_btn-continue" style="color:  darkblue; text-decoration: none;">Tiếp tục mua hàng</div>
+    <a href="@Url.Action("XemGioHang", "XemGioHang")" class="checkout" title="Thanh toán ngay" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background: #ee4d2d; color: white; text-decoration: none; border-radius: 4px;">
+      Xem Giỏ Hàng
+    </a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('.AddToCart').on('click', function () {
+        var productId = $(this).data('product-id');
+        var productName = $(this).data('product-name');
+        var productPriceElement = $(this).closest('.product-info').find('.product-price');
+        var productPrice = productPriceElement.html();
+        var productDungTich = $(this).data('product-dungtich');
+        var productHinhAnh = $(this).data('product-hinhanh');
+        var productThuongHieu = $(this).data('product-thuonghieu');
+
+        $.ajax({
+            url: '@Url.Action("ThemSpVaoGioHang", "XemGioHang")',
+            type: 'POST',
+            data: { id: productId },
+            success: function (response) {
+                if (response.success) {
+                    var productDetailsHtml = '<img src="@Url.Content("~/Content/SanPhamImage/")' + productHinhAnh.trim() + '" alt="' + productName + '" style="width: 100px; height: auto;"/>';
+                    productDetailsHtml += '<p>Mã sản phẩm: ' + productId + '</p>';
+                    productDetailsHtml += '<p>Tên sản phẩm: ' + productName + '</p>';
+                    productDetailsHtml += '<p>Giá tiền: ' + productPrice + '</p>'; // Sử dụng nội dung hiển thị của phần giá tiền
+                    productDetailsHtml += '<p>Dung tích: ' + productDungTich + ' ml</p>';
+                    productDetailsHtml += '<p>Thương hiệu: ' + productThuongHieu + '</p>';
+                    productDetailsHtml += '<p style="color: green;">Sản phẩm đã được thêm vào giỏ hàng!</p>';
+
+                    $('#cart-item-details').html(productDetailsHtml);
+                    $('.modal-overlay').fadeIn();
+                    $('#cart-modal').fadeIn();
+
+                    $('.cart_btn-close').on('click', function () {
+                        $('#cart-modal').fadeOut();
+                        $('.modal-overlay').fadeOut();
+                    });
+
+                    $('.modal-overlay, .cart_btn-continue').on('click', function () {
+                        $('#cart-modal').fadeOut();
+                        $('.modal-overlay').fadeOut();
+                    });
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                alert("Đã có lỗi xảy ra, vui lòng thử lại!");
+            }
+        });
+    });
+});
+
+</script>

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<WEB.Models.BINHLUAN>
+@{
+    ViewBag.Title = "Quản Lý Bình Luận";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Quản Lý Bình Luận </h2>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    Mã Bình Luận
+                </th>
+                <th>
+                    Nội Dung
+                </th>
+                <th>
+                    Họ Tên
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Bài Bình Luận
+                </th>             
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaBinhLuan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NoiDung)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoTen)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.TINTUC.TieuDe)
+                </td>                         
+                <td>
+                    @Html.ActionLink("Xóa", "XoaBinhLuan", new { id = item.MaBinhLuan }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,27 @@
+﻿@model WEB.Models.TINTUC
+
+@{
+    ViewBag.Title = "Chi Tiết Tin Tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="text-align: center;">
+    <h2>@Html.DisplayFor(model => model.TieuDe)</h2>
+</div>
+
+<div style="text-align: center;">
+    <p>   @Html.DisplayFor(model => model.ThoiGian)   @Html.DisplayFor(model => model.NHANVIEN.HoTen)</p>
+
+</div>
+
+<div style="text-align: center;">
+    <img src="@Url.Content("~/Content/Tintucimage/" + Model.HinhAnh.Trim())" width="200" alt="Hình ảnh tin tức">
+</div>
+
+<div style="text-align: center;">
+    @Html.DisplayFor(model => model.NoiDung)
+</div>
+
+<p>
+    @Html.ActionLink("Quay lại danh sách", "DanhSachTinTuc")
+</p>

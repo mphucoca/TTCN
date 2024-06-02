@@ -1,0 +1,59 @@
+﻿@model WEB.Models.TAIKHOAN
+@{
+    ViewBag.Title = "Xóa Tài Khoản";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+ 
+
+ 
+
+<h2>Xóa Tài Khoản</h2>
+
+<h3>Bạn có chắc chắn muốn xóa tài khoản này không?</h3>
+<div>
+    <div class="info-container">
+        <h4>Thông tin tài khoản</h4>
+        <hr />
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.ID)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.ID)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.Ho)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.Ho)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.Ten)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.Ten)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.Email)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.Email)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.SDT)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.SDT)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.MatKhau)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.MatKhau)</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">@Html.DisplayNameFor(model => model.PhanQuyen)</span>
+            <span class="info-value">@Html.DisplayFor(model => model.PhanQuyen)</span>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-danger" /> |
+            @Html.ActionLink("Quay Lại", "QuanLyTaiKhoan")
+        </div>
+    }
+</div>
+
+

@@ -1,0 +1,51 @@
+﻿
+@model IEnumerable<WEB.Models.DANHMUC>
+@{
+    ViewBag.Title = "Quản Lý Danh Mục";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+
+
+
+
+
+
+<h2>Quản lý thông tin danh mục</h2>
+
+<p>
+    @Html.ActionLink("Thêm mới","TaoDanhMuc", "QuanLyDanhMuc")
+</p>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    Mã Danh Mục 
+                </th>
+                <th>
+                    Tên Danh Mục 
+                </th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaDanhMuc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenDanhMuc)
+                    </td>                                      
+                    <td>
+                        @Html.ActionLink("Chỉnh sửa", "SuaDanhMuc", new { id = item.MaDanhMuc }, new { @class = "btn btn-primary" })
+
+                        @Html.ActionLink("Xóa", "XoaDanhMuc", new { id = item.MaDanhMuc }, new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

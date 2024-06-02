@@ -1,0 +1,54 @@
+﻿@model WEB.Models.GIAMGIA
+@{
+    ViewBag.Title = "Tạo Giảm Giá";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-container">
+        <h4 style="margin:20px;">Nhập Thông Tin Giảm Giá</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group row">
+            @Html.LabelFor(model => model.MoTa)
+            @Html.TextAreaFor(model => model.MoTa, new { @class = "form-control", rows = 4 })
+            @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(model => model.TenGiamGia)
+            @Html.EditorFor(model => model.TenGiamGia, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TenGiamGia, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(model => model.NgayBatDau)
+            @Html.TextBoxFor(model => model.NgayBatDau, new { @class = "form-control", @type = "datetime-local" })
+            @Html.ValidationMessageFor(model => model.NgayBatDau, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(model => model.NgayKetThuc)
+            @Html.TextBoxFor(model => model.NgayKetThuc, new { @class = "form-control", @type = "datetime-local" })
+            @Html.ValidationMessageFor(model => model.NgayKetThuc, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(model => model.SoLuong)
+            @Html.EditorFor(model => model.SoLuong, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SoLuong, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Tạo Giảm Giá" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay Lại", "QuanLyGiamGia", "QuanLyGiamGia", null, new { @class = "btn-link" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

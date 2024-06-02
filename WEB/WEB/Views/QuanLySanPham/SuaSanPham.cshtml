@@ -1,0 +1,87 @@
+﻿@model WEB.Models.SANPHAM
+@{
+    ViewBag.Title = "SuaSanPham";
+    Layout = "~/Views/Shared/Backend.cshtml";
+}
+
+<h2>Chỉnh Sửa Sản Phẩm </h2>
+@using (Html.BeginForm("SuaSanPham", "QuanLySanPham", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-container">
+    <h4 style="margin:20px;">Sửa Thông Tin Sản Phẩm</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.MaSanPham)
+    <div class="form-group row">
+        @Html.LabelFor(model => model.MaSanPham)
+        @Html.DisplayFor(model=>model.MaSanPham)
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(model => model.TenSanPham)
+        @Html.EditorFor(model => model.TenSanPham, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.TenSanPham, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(model => model.MaDanhMuc, "Danh Mục", htmlAttributes: new { @class = "control-label  " })
+        <div>
+            @Html.DropDownList("MaDanhMuc", (SelectList)ViewBag.MaDanhMuc, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.MaDanhMuc, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(model => model.MaThuongHieu, "Thương Hiệu", htmlAttributes: new { @class = "control-label " })
+        <div>
+            @Html.DropDownList("MaThuongHieu", (SelectList)ViewBag.MaThuongHieu, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.MaThuongHieu, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        @Html.Label("Hình Ảnh", htmlAttributes: new { @class = "control-label" })
+        <div>
+            <input type="file" id="HinhAnh" name="HinhAnh" class="form-control-file" accept="image/*" onchange="previewImage(event)" />
+            <img id="preview" src="@(Model.HinhAnh != null ? Url.Content("~/Content/SanPhamImage/" + Model.HinhAnh) : "#")" alt="Image Preview" style="display:@(Model.HinhAnh != null ? "block" : "none"); max-width:100px; height: 100px; margin-top: 10px;" />
+            @Html.Hidden("CurrentHinhAnh", Model.HinhAnh)
+        </div>
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(model => model.GiaTien)
+        @Html.EditorFor(model => model.GiaTien, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.GiaTien, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(model => model.DungTich)
+        @Html.EditorFor(model => model.DungTich, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.DungTich, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(model => model.MoTa)
+        @Html.TextAreaFor(model => model.MoTa, new { @class = "form-control", rows = 4 })
+        @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group row">
+        <input type="submit" value="Sửa Sản Phẩm" class="btn btn-default" />
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Quay Lại", "QuanLySanPham", "QuanLySanPham", null, new { @class = "btn-link" })
+</div>
+
+@section Scripts {
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}
