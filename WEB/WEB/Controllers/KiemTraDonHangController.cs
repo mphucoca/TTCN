@@ -22,9 +22,9 @@ namespace WEB.Controllers
         }
         public ActionResult Kiemtra(String phone, String email)
         {
-
             List<DONHANG> list = new List<DONHANG>();
-            if (email != null)
+
+            if (!string.IsNullOrWhiteSpace(email))
             {
                 var orderWithEmail = db.DONHANGs.FirstOrDefault(p => p.TAIKHOAN.Email.Trim() == email.Trim());
                 if (orderWithEmail != null)
@@ -32,7 +32,8 @@ namespace WEB.Controllers
                     list.Add(orderWithEmail);
                 }
             }
-            if (phone != null)
+
+            if (!string.IsNullOrWhiteSpace(phone))
             {
                 var orderWithPhone = db.DONHANGs.FirstOrDefault(p => p.TAIKHOAN.SDT.Trim() == phone.Trim());
                 if (orderWithPhone != null)
@@ -41,7 +42,12 @@ namespace WEB.Controllers
                 }
             }
 
-            foreach(var item in list)
+            if (!list.Any())
+            {
+                ViewBag.Message = "Không tìm thấy đơn hàng nào.";
+            }
+
+            foreach (var item in list)
             {
                 if (Session["username"] != null && Session["username"].ToString() == item.ID.ToString())
                 {
@@ -52,6 +58,7 @@ namespace WEB.Controllers
             ViewBag.list = list;
             return View("KiemTraDonHang");
         }
+
         public ActionResult ChiTietDonHang(int? id)
         {
             if (Session["username"] == null)
@@ -103,19 +110,4 @@ namespace WEB.Controllers
 
     }
 }
-
  
-
-
-
-
-
-
-
-
-
-
-
- 
-
-      

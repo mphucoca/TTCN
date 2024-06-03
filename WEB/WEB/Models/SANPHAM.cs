@@ -25,22 +25,28 @@
         public int MaSanPham { get; set; }
         [DisplayName("Tên Sản Phẩm")]
         [StringLength(30)]
+        [Required(ErrorMessage = "Vui lòng nhập tên sản phẩm.")]
         public string TenSanPham { get; set; }
         [DisplayName("Hình Ảnh")]
         public string HinhAnh { get; set; }
 
         [Column(TypeName = "numeric")]
+        [Required(ErrorMessage = "Vui lòng nhập giá tiền.")]
         [DisplayName("Giá Tiền")]
         public decimal? GiaTien { get; set; }
         [DisplayName("Dung Tích")]
         public int? DungTich { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập mô tả.")]
 
         [Column(TypeName = "nvarchar")]
         [DisplayName("Mô Tả")]
+      
         public string MoTa { get; set; }
         [DisplayName("Mã Danh Mục")]
+        [Required(ErrorMessage = "Vui lòng chọn danh mục.")]
         public int MaDanhMuc { get; set; }
         [DisplayName("Mã Thương Hiệu")]
+        [Required(ErrorMessage = "Vui lòng chọn thương hiệu.")]
         public int MaThuongHieu { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

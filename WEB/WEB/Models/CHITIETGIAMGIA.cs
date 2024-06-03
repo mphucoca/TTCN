@@ -22,12 +22,13 @@
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [DisplayName("Mã Giảm Giá")]
         public int MaGiamGia { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập mức giảm giá.")]
         [Column(TypeName = "numeric")]
         [DisplayName("Mức Giảm Giá")]
         public decimal? MucGiamGia { get; set; }
 
         [Column(TypeName = "numeric")]
+       
         [DisplayName("Giá Mua")]
         public decimal? Giamua { get; set; }
 

@@ -21,15 +21,15 @@
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [DisplayName("Mã Nhân Viên")]
         public int MaNhanVien { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập họ tên.")]
         [StringLength(90)]
         [DisplayName("Họ Tên")]
         public string HoTen { get; set; }
-
+         [Required(ErrorMessage = "Vui lòng nhập số điện thoại.")]
         [StringLength(20)]
         [DisplayName("Số Điện Thoại")]
         public string SDT { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập địa chỉ.")]
         [StringLength(90)]
         [DisplayName("Địa Chỉ")]
         public string DiaChi { get; set; }

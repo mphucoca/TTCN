@@ -19,7 +19,7 @@
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [DisplayName("Mã Thương Hiệu")]
         public int MaThuongHieu { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập tên thương hiệu.")]
         [StringLength(30)]
         [DisplayName("Tên Thương Hiệu")]
         public string TenThuongHieu { get; set; }

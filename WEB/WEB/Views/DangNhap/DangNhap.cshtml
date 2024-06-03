@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
- 
+
 
 <style>
     .login-form {
@@ -43,10 +43,6 @@
             transition: background-color 0.3s;
         }
 
-            .login-form input[type="submit"]:hover {
-                background-color: #45a049;
-            }
-
         /* Thêm các quy tắc margin để căn giữa ô nhập */
         .login-form input[type="text"],
         .login-form input[type="password"] {
@@ -56,14 +52,15 @@
 </style>
 
 
+
 <div class="login-form">
     <h2>ĐĂNG NHẬP</h2>
     @using (Html.BeginForm("KiemTraDangNhap", "DangNhap"))
     {
 
-        <p> <input type="text" name="username" placeholder="Email" /></p>
+        <p> <input type="email" style="width: 200px; height: 40px;" name="username" placeholder="Email" /></p>
 
-        <p>  <input type="password" name="password" placeholder="Password" /></p>
+        <p>  <input type="password" style="width: 200px; height: 40px;"  name="password" placeholder="Password" /></p>
         <p><input type="submit" value="Đăng nhập" /></p>
         <p class="register-link">@Html.ActionLink("Đăng Ký", "DangKy", "DangKy")</p>
     }
@@ -81,3 +78,27 @@
         </div>
     }
 </div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('form').submit(function (e) {
+                var email = $('input[name="username"]').val();
+                var password = $('input[name="password"]').val();
+
+                // Kiểm tra email có đúng định dạng và không trống
+                if (email.trim() === '') {
+                    alert('Vui lòng nhập một địa chỉ email ');
+                    e.preventDefault();
+                    return;
+                }
+
+                // Kiểm tra mật khẩu không được trống
+                if (password.trim() === '') {
+                    alert('Vui lòng nhập mật khẩu.');
+                    e.preventDefault();
+                    return;
+                }
+            });
+        });
+    </script>
+}

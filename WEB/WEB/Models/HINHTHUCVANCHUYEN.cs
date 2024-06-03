@@ -22,8 +22,8 @@
         [DisplayName("Mã Hình Thức Vận Chuyển")]
 
         public int MaHinhThucVanChuyen { get; set; }
-
-        [Required]
+        [Required(ErrorMessage = "Vui lòng nhập tên hình thức vận chuyển.")]
+        
         [StringLength(20)]
         [DisplayName("Tên Hình Thức Vận Chuyển")]
         public string TenHinhThucVanChuyen { get; set; }

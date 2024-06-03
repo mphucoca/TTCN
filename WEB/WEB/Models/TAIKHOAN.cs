@@ -17,21 +17,25 @@
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập họ.")]
         [StringLength(30)]
+       
         [DisplayName("Họ")]
+
         public string Ho { get; set; }
         [DisplayName("Tên")]
         [StringLength(30)]
+        [Required(ErrorMessage = "Vui lòng nhập tên.")]
         public string Ten { get; set; }
         [DisplayName("Email")]
         [StringLength(90)]
+        [Required(ErrorMessage = "Vui lòng nhập email.")]
         public string Email { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập số điện thoại.")]
         [StringLength(20)]
         [DisplayName("Số điện thoại")]
         public string SDT { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập mật khẩu.")]
         [StringLength(90)]
         [DisplayName("Mật khẩu")]
         public string MatKhau { get; set; }

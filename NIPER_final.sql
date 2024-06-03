@@ -333,18 +333,8 @@ VALUES
     (3, N'Lê Văn Z', 'levanz@example.com', '0369876543', N'Thắc mắc về chính sách đổi trả', 1);
 
 
-	-- Nhập dữ liệu minh họa cho bảng GIOHANG
-INSERT INTO GIOHANG (MaGioHang, ID)
-VALUES
-    ('GH001', 1),
-    ('GH002', 2),
-    ('GH003', 3);
--- Nhập dữ liệu minh họa cho bảng CHITIETGIOHANG
-INSERT INTO CHITIETGIOHANG (MaSanPham, MaGioHang, SoLuong, Giaban)
-VALUES
-    (1, 'GH001', 2, 500000),
-    (2, 'GH002', 1, 700000),
-    (3, 'GH003', 3, 350000);
+ 
+ 
  -- Nhập dữ liệu minh họa cho bảng DANHGIA
 INSERT INTO DANHGIA (MaDanhGiaSanPham, HoTen, NoiDungDanhGia, Email, MaSanPham, ThoiGian, HinhAnh)
 VALUES
@@ -352,25 +342,8 @@ VALUES
   
     (3, N'Lê Văn C', N'Sản phẩm không như mô tả.', 'levanc@example.com', 3, '2024-05-09', NULL);
 
-	-- Nhập dữ liệu cho bảng GIAMGIA
-INSERT INTO GIAMGIA (MaGiamGia, MoTa, TenGiamGia, NgayBatDau, NgayKetThuc, SoLuong)
-VALUES 
-    (1, N'Giảm giá 10% cho mùa hè', N'GIAM10', '2024-01-01', '2024-08-31', 100),
-    (2, N'Giảm giá 20% cho mùa đông', N'GIAM20', '2024-01-01', '2025-02-28', 50),
-    (3, N'Khuyến mãi đặc biệt Black Friday', N'BLACKFRIDAY', '2024-01-26', '2024-11-30', 200);
 
--- Nhập dữ liệu cho bảng DONHANG
-INSERT INTO DONHANG (MaDonHang, NgayDatHang, DiaChiGiao, GhiChu, TinhTrangThanhToan, TinhTrangGiaoHang, ID, MaHinhThucThanhToan, MaHinhThucVanChuyen, MaGiamGia)
-VALUES 
-    (1, GETDATE(), N'123 Đường ABC, Quận 1, Thành phố Hồ Chí Minh', N'', N'Chưa thanh toán', N'Đang chờ xử lý', 1, 1, 1, 1),
-    (2, GETDATE(), N'456 Đường XYZ, Quận 2, Thành phố Hồ Chí Minh', N'', N'Đã thanh toán', N'Đã giao hàng', 2, 2, 2, 1);
-	 
--- Nhập dữ liệu cho bảng CHITIETDONHANG
-INSERT INTO CHITIETDONHANG (MaSanPham, MaDonHang, SoLuongMua, GiaMua)
-VALUES 
-    (1, 1, 1, 1000000),
-    (2, 1, 2, 2400000);
- -- Nhập dữ liệu cho bảng SANPHAM
+ 
 INSERT INTO SANPHAM (MaSanPham, TenSanPham, HinhAnh, GiaTien, DungTich, MoTa, MaDanhMuc, MaThuongHieu)
 VALUES 
     
@@ -385,8 +358,13 @@ VALUES
     (13, N'Sản phẩm 13', N'13.jpg', 800000, 150, N'Mô tả sản phẩm 13', 1, 1);
 
 
-	-- thay đổi giá trị cho giảm giá
-	-- Thêm dữ liệu cho bảng GIAMGIA
+ 	-- Nhập dữ liệu cho bảng GIAMGIA
+INSERT INTO GIAMGIA (MaGiamGia, MoTa, TenGiamGia, NgayBatDau, NgayKetThuc, SoLuong)
+VALUES 
+    (1, N'Giảm giá 10% cho mùa hè', N'GIAM10', '2024-01-01', '2024-08-31', 100),
+    (2, N'Giảm giá 20% cho mùa đông', N'GIAM20', '2024-01-01', '2025-02-28', 50),
+    (3, N'Khuyến mãi đặc biệt Black Friday', N'BLACKFRIDAY', '2024-01-26', '2024-11-30', 200);
+
 INSERT INTO GIAMGIA (MaGiamGia, MoTa, TenGiamGia, NgayBatDau, NgayKetThuc, SoLuong)
 VALUES 
     (4, N'Khuyến mãi hè 2024', N'KMHE2024', '2024-01-01', '2025-08-31', 150),
@@ -395,32 +373,38 @@ VALUES
     (7, N'Giảm giá cuối năm', N'GGCN2024', '2024-1-15', '2025-12-31', 80),
     (8, N'Khuyến mãi đặc biệt Tết Nguyên Đán', N'TET2025', '2024-01-20', '2025-02-10', 120);
 
-   -- Thêm nhiều bộ dữ liệu vào bảng CHITIETGIAMGIA
- INSERT INTO CHITIETGIAMGIA (MaSanPham, MaGiamGia, MucGiamGia, Giamua)
-VALUES 
-    (4, 8, 25, 200000);
-
-INSERT INTO CHITIETGIAMGIA (MaSanPham, MaGiamGia, MucGiamGia, Giamua)
-VALUES 
-    (6, 8, 10, 100000);
-
-INSERT INTO CHITIETGIAMGIA (MaSanPham, MaGiamGia, MucGiamGia, Giamua)
-VALUES 
-    (7, 8, 15, 50000);
-
-INSERT INTO CHITIETGIAMGIA (MaSanPham, MaGiamGia, MucGiamGia, Giamua)
-VALUES 
-    (8, 8, 20, 75000);
-
-INSERT INTO CHITIETGIAMGIA (MaSanPham, MaGiamGia, MucGiamGia, Giamua)
-VALUES 
-    (9, 8, 5, 25000);
-
-INSERT INTO CHITIETGIAMGIA (MaSanPham, MaGiamGia, MucGiamGia, Giamua)
-VALUES 
-    (10, 8, 30, 300000);
- 
-   
+INSERT INTO CHITIETGIAMGIA Values
+(1,1,30,0);
+ INSERT INTO CHITIETGIAMGIA Values
+(2,1,30,0);
+INSERT INTO CHITIETGIAMGIA Values
+(3,1,30,0);
+ INSERT INTO CHITIETGIAMGIA Values
+(5,1,30,0),
+(6,1,30,0),
+(7,1,30,0),
+(8,1,30,0),
+(9,1,30,0),
+(10,1,30,0),
+(11,1,30,0),
+(12,1,30,0),
+(13,1,30,0);
+   INSERT INTO CHITIETGIAMGIA Values
+(1,3,30,3400000);
+ INSERT INTO CHITIETGIAMGIA Values
+(2,2,30,360000);
+INSERT INTO CHITIETGIAMGIA Values
+(3,3,30,3400000);
+ INSERT INTO CHITIETGIAMGIA Values
+(5,4,30,340000),
+(6,5,30,200000),
+(7,6,30,140000),
+(8,7,30,150000),
+(9,8,30,450000),
+(10,2,30,360000),
+(11,2,30,360000),
+(12,3,30,3730000),
+(13,4,30,36000);
     
  
  

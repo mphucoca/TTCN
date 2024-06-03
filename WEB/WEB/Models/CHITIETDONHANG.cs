@@ -20,7 +20,7 @@ namespace WEB.Models
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int MaDonHang { get; set; }
-
+      
         public int? SoLuongMua { get; set; }
 
         [Column(TypeName = "numeric")]

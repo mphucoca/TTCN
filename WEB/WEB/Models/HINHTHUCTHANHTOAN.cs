@@ -21,7 +21,7 @@
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [DisplayName("Mã Hình Thức Thanh Toán")]
         public int MaHinhThucThanhToan { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập tên hình thức thanh toán.")]
         [StringLength(30)]
         [DisplayName("Tên Hình Thức Thanh Toán")]
         public string TenHinhThucThanhToan { get; set; }

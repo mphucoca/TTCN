@@ -22,18 +22,19 @@
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [DisplayName("Mã Giảm Giá")]
         public int MaGiamGia { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập mô tả.")]
         [Column(TypeName = "nvarchar")]
         [DisplayName("Mô Tả")]
         public string MoTa { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập tên giảm giá.")]
         [StringLength(30)]
         [DisplayName("Tên Giảm Giá")]
         public string TenGiamGia { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập ngày bắt đầu.")]
 
         [DisplayName("Ngày Bắt Đầu")]
         public DateTime? NgayBatDau { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập ngày kết thúc.")]
         [DisplayName("Ngày Kết Thúc")]
         public DateTime? NgayKetThuc { get; set; }
 

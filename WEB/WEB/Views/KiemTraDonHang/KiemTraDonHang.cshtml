@@ -16,7 +16,6 @@
         margin: 20px;
     }
 </style>
-
 <div class="styled-div">
     <h2>Kiểm tra đơn hàng của bạn</h2>
     <form id="contactForm" method="post" action="/KiemTraDonHang/KiemTra">
@@ -37,6 +36,13 @@
         </div>
         <button type="submit" class="btn btn-primary">Kiểm tra</button>
     </form>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-warning" role="alert">
+            @ViewBag.Message
+        </div>
+    }
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -58,7 +64,25 @@
                 $('#emailGroup').show();
             }
         });
+
+        $('#contactForm').submit(function (event) {
+            var contactType = $('input[name="contactType"]:checked').val();
+            var phone = $('#phoneInput').val().trim();
+            var email = $('#emailInput').val().trim();
+
+            if (contactType === 'phone' && phone === '') {
+                alert('Vui lòng nhập số điện thoại.');
+                event.preventDefault();
+            } else if (contactType === 'email' && email === '') {
+                alert('Vui lòng nhập email.');
+                event.preventDefault();
+            } else if (contactType === 'both' && (phone === '' || email === '')) {
+                alert('Vui lòng nhập số điện thoại và email.');
+                event.preventDefault();
+            }
+        });
     });
+
 </script>
 <style>
     .styled-div {
@@ -156,7 +180,6 @@
         .order-actions a:hover {
             text-decoration: underline;
         }
-
 </style>
 @if (ViewBag.list != null)
 {
@@ -173,26 +196,29 @@
                     <th>Hình thức vận chuyển</th>
                     <th>Tình trạng thanh toán</th>
                     <th>Tình trạng giao hàng</th>
-                  @if (ViewBag.TRUE != null) {<th></th> }  
+                    @if (ViewBag.TRUE != null)
+                    {
+                        <th></th>
+}
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in ViewBag.list)
                 {
-                <tr>
-                    <td>@item.NgayDatHang</td>
-                    <td>@(item.TAIKHOAN != null ? item.TAIKHOAN.Ho : "") @(item.TAIKHOAN != null ? item.TAIKHOAN.Ten : "")</td>
-                    <td>@item.DiaChiGiao</td>
-                    <td>@item.GhiChu</td>
-                    <td>@(item.HINHTHUCTHANHTOAN != null ? item.HINHTHUCTHANHTOAN.TenHinhThucThanhToan : "")</td>
-                    <td>@(item.HINHTHUCVANCHUYEN != null ? item.HINHTHUCVANCHUYEN.TenHinhThucVanChuyen : "")</td>
-                    <td>@item.TinhTrangThanhToan</td>
-                    <td>@item.TinhTrangGiaoHang</td>
-                    @if (Session["username"] != null && Session["username"].ToString() == item.ID.ToString())
-                    {
-                        <td class="order-actions">@Html.ActionLink("Chi Tiết", "ChiTietDonHang", new { id = item.MaDonHang })</td>
-                    }
-                </tr>
+                    <tr>
+                        <td>@item.NgayDatHang</td>
+                        <td>@(item.TAIKHOAN != null ? item.TAIKHOAN.Ho : "") @(item.TAIKHOAN != null ? item.TAIKHOAN.Ten : "")</td>
+                        <td>@item.DiaChiGiao</td>
+                        <td>@item.GhiChu</td>
+                        <td>@(item.HINHTHUCTHANHTOAN != null ? item.HINHTHUCTHANHTOAN.TenHinhThucThanhToan : "")</td>
+                        <td>@(item.HINHTHUCVANCHUYEN != null ? item.HINHTHUCVANCHUYEN.TenHinhThucVanChuyen : "")</td>
+                        <td>@item.TinhTrangThanhToan</td>
+                        <td>@item.TinhTrangGiaoHang</td>
+                        @if (Session["username"] != null && Session["username"].ToString() == item.ID.ToString())
+                        {
+                            <td class="order-actions">@Html.ActionLink("Chi Tiết", "ChiTietDonHang", new { id = item.MaDonHang })</td>
+                        }
+                    </tr>
                 }
 
 

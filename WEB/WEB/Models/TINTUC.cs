@@ -22,19 +22,19 @@
         [DisplayName("Mã Tin Tức")]
 
         public int MaTinTuc { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập tiêu đề.")]
         [StringLength(100)]
         [DisplayName("Tiêu Đề")]
-
+        
         public string TieuDe { get; set; }
         [DisplayName("Nội Dung")]
-
+        [Required(ErrorMessage = "Vui lòng nhập nội dung.")]
         [Column(TypeName = "nvarchar")]
         public string NoiDung { get; set; }
 
         [StringLength(20)]
         [DisplayName("Hình Ảnh")]
-
+        [Required(ErrorMessage = "Vui lòng nhập thời gian.")]
         public string HinhAnh { get; set; }
         [DisplayName("Thời Gian")]
 

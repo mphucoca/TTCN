@@ -18,9 +18,11 @@
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [DisplayName("Mã Danh Mục")]
+        
         public int MaDanhMuc { get; set; }
         [DisplayName("Tên Danh Mục")]
         [StringLength(40)]
+        [Required(ErrorMessage = "Vui lòng nhập tên danh mục.")]
         public string TenDanhMuc { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

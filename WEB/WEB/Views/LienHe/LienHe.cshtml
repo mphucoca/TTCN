@@ -1,62 +1,55 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Liên Hệ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
- 
-
- 
 <br />
-
 <br />
 <h2>Nơi giải đáp toàn bộ mọi thắc mắc của bạn</h2>
 
-    <b>  LIÊN HỆ VỚI CHÚNG TÔI  </b>
-    @using (Html.BeginForm("Nhantinnhan", "LienHe", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-    {
-        @Html.AntiForgeryToken()
+<b>LIÊN HỆ VỚI CHÚNG TÔI</b>
+@using (Html.BeginForm("Nhantinnhan", "LienHe", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "contactForm" }))
+{
+    @Html.AntiForgeryToken()
 
-        <h4>Thông tin liên hệ</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <h4>Thông tin liên hệ</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.Label("Họ và tên:", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBox("HoTen", null, new { @class = "form-control", placeholder = "Nhập họ và tên của bạn" })
-            </div>
+    <div class="form-group">
+        @Html.Label("Họ và tên:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("HoTen", null, new { @class = "form-control", placeholder = "Nhập họ và tên của bạn", required = "required" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.Label("Email:", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBox("Email", null, new { @class = "form-control", placeholder = "Nhập địa chỉ email của bạn" })
-            </div>
+    <div class="form-group">
+        @Html.Label("Email:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("Email", null, new { @class = "form-control", placeholder = "Nhập địa chỉ email của bạn", required = "required" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.Label("Điện thoại:", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBox("DienThoai", null, new { @class = "form-control", placeholder = "Nhập số điện thoại của bạn" })
-            </div>
+    <div class="form-group">
+        @Html.Label("Điện thoại:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("DienThoai", null, new { @class = "form-control", placeholder = "Nhập số điện thoại của bạn", required = "required" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.Label("Nội dung:", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextArea("NoiDung", null, new { @class = "form-control", placeholder = "Nhập nội dung tin nhắn của bạn" })
-            </div>
+    <div class="form-group">
+        @Html.Label("Nội dung:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextArea("NoiDung", null, new { @class = "form-control", placeholder = "Nhập nội dung tin nhắn của bạn", required = "required" })
         </div>
+    </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <button type="submit" class="btn btn-primary">Gửi thông tin</button>
-            </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Gửi thông tin</button>
         </div>
-    }
-
-
+    </div>
+}
 
 @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
 {
@@ -69,3 +62,56 @@
         <div class="alert alert-success">@ViewBag.SuccessMessage</div>
     }
 }
+@section Scripts {
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            var isValid = true;
+
+            // Get form inputs
+            var hoTen = document.getElementsByName("HoTen")[0].value.trim();
+            var email = document.getElementsByName("Email")[0].value.trim();
+            var dienThoai = document.getElementsByName("DienThoai")[0].value.trim();
+            var noiDung = document.getElementsByName("NoiDung")[0].value.trim();
+
+            // Regular expressions for validation
+           
+        
+
+            // Clear previous error messages
+            var errorElements = document.querySelectorAll(".text-danger");
+            errorElements.forEach(function(element) {
+                element.innerText = "";
+            });
+
+            // Validate HoTen
+            if (hoTen === "") {
+                isValid = false;
+                document.querySelector("label[for='HoTen']").innerText += " - Họ và tên không được để trống";
+            }
+
+            // Validate Email
+            if (email === "") {
+                isValid = false;
+                document.querySelector("label[for='Email']").innerText += " - Email không được để trống";
+            } 
+
+            // Validate DienThoai
+            if (dienThoai === "") {
+                isValid = false;
+                document.querySelector("label[for='DienThoai']").innerText += " - Điện thoại không được để trống";
+            }  
+
+            // Validate NoiDung
+            if (noiDung === "") {
+                isValid = false;
+                document.querySelector("label[for='NoiDung']").innerText += " - Nội dung không được để trống";
+            }
+
+            // Prevent form submission if validation fails
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+}
+

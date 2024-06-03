@@ -23,17 +23,17 @@
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [DisplayName("Mã Cửa Hàng")]
         public int MaCuaHang { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập tên cửa hàng.")]
         [StringLength(90)]
         [DisplayName("Tên Cửa Hàng")]
 
         public string TenCuaHang { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập địa chỉ.")]
         [StringLength(90)]
         [DisplayName("Địa Chỉ")]
 
         public string DiaChi { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập số điện thoại.")]
         [StringLength(20)]
         [DisplayName("Số Điện Thoại")]
 
